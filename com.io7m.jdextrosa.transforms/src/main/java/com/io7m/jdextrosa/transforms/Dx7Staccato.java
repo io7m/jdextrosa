@@ -16,7 +16,6 @@
 
 package com.io7m.jdextrosa.transforms;
 
-import com.io7m.jdextrosa.core.Dx7AlgorithmID;
 import com.io7m.jdextrosa.core.Dx7AlgorithmOperators;
 import com.io7m.jdextrosa.core.Dx7Operator;
 import com.io7m.jdextrosa.core.Dx7OperatorID;
