@@ -20,14 +20,16 @@
 
 module com.io7m.jdextrosa.cmdline
 {
-  requires com.io7m.junreachable.core;
-  requires jcommander;
-  requires slf4j.api;
-  requires com.io7m.jdextrosa.io;
   requires com.io7m.jdextrosa.core;
-  requires io.vavr;
-  requires logback.classic;
+  requires com.io7m.jdextrosa.io.xml.spi;
+  requires com.io7m.jdextrosa.io.xml;
+  requires com.io7m.jdextrosa.io;
+  requires com.io7m.junreachable.core;
   requires com.io7m.mutable.numbers.core;
+  requires io.vavr;
+  requires jcommander;
+  requires logback.classic;
+  requires slf4j.api;
 
   opens com.io7m.jdextrosa.cmdline to jcommander;
 }

@@ -88,7 +88,7 @@ public interface Dx7OperatorType
   }
 
   @Value.Default
-  default int envelopeR1Time()
+  default int envelopeR1Rate()
   {
     return 99;
   }
@@ -100,7 +100,7 @@ public interface Dx7OperatorType
   }
 
   @Value.Default
-  default int envelopeR2Time()
+  default int envelopeR2Rate()
   {
     return 99;
   }
@@ -112,7 +112,7 @@ public interface Dx7OperatorType
   }
 
   @Value.Default
-  default int envelopeR3Time()
+  default int envelopeR3Rate()
   {
     return 99;
   }
@@ -124,7 +124,7 @@ public interface Dx7OperatorType
   }
 
   @Value.Default
-  default int envelopeR4Time()
+  default int envelopeR4Rate()
   {
     return 99;
   }
@@ -241,10 +241,10 @@ public interface Dx7OperatorType
       "Valid levels");
 
     RangeCheck.checkIncludedInInteger(
-      this.envelopeR1Time(),
-      "R1 Time",
+      this.envelopeR1Rate(),
+      "R1 Rate",
       RangeInclusiveI.of(0, 99),
-      "Valid times");
+      "Valid rates");
 
     RangeCheck.checkIncludedInInteger(
       this.envelopeR2Level(),
@@ -253,10 +253,10 @@ public interface Dx7OperatorType
       "Valid levels");
 
     RangeCheck.checkIncludedInInteger(
-      this.envelopeR2Time(),
-      "R2 Time",
+      this.envelopeR2Rate(),
+      "R2 Rate",
       RangeInclusiveI.of(0, 99),
-      "Valid times");
+      "Valid rates");
 
     RangeCheck.checkIncludedInInteger(
       this.envelopeR3Level(),
@@ -265,10 +265,10 @@ public interface Dx7OperatorType
       "Valid levels");
 
     RangeCheck.checkIncludedInInteger(
-      this.envelopeR3Time(),
-      "R3 Time",
+      this.envelopeR3Rate(),
+      "R3 Rate",
       RangeInclusiveI.of(0, 99),
-      "Valid times");
+      "Valid rates");
 
     RangeCheck.checkIncludedInInteger(
       this.envelopeR4Level(),
@@ -277,10 +277,10 @@ public interface Dx7OperatorType
       "Valid levels");
 
     RangeCheck.checkIncludedInInteger(
-      this.envelopeR4Time(),
-      "R4 Time",
+      this.envelopeR4Rate(),
+      "R4 Rate",
       RangeInclusiveI.of(0, 99),
-      "Valid times");
+      "Valid rates");
   }
 
   enum LevelScalingCurve

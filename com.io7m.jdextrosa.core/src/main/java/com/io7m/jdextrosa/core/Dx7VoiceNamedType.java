@@ -21,6 +21,7 @@ import com.io7m.jranges.RangeInclusiveI;
 import org.immutables.value.Value;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 @DxImmutableStyleType
 @Value.Immutable
@@ -31,6 +32,9 @@ public interface Dx7VoiceNamedType
 
   @Value.Parameter
   Dx7Voice voice();
+
+  @Value.Parameter
+  Optional<Dx7VoiceMetadata> metadata();
 
   @Value.Check
   default void checkPreconditions()

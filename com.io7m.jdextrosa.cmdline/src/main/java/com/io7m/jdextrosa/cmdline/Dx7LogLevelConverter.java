@@ -22,8 +22,7 @@ import com.beust.jcommander.IStringConverter;
  * A converter for {@link Dx7LogLevel} values.
  */
 
-public final class Dx7LogLevelConverter implements
-  IStringConverter<Dx7LogLevel>
+public final class Dx7LogLevelConverter implements IStringConverter<Dx7LogLevel>
 {
   /**
    * Construct a new converter.

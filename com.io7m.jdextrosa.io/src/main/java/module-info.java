@@ -22,13 +22,13 @@ module com.io7m.jdextrosa.io
 {
   requires static org.immutables.value;
 
-  requires com.io7m.jdextrosa.core;
-  requires com.io7m.junreachable.core;
-  requires com.io7m.jlexing.core;
-  requires io.vavr;
   requires com.io7m.jaffirm.core;
-  requires slf4j.api;
+  requires com.io7m.jdextrosa.core;
+  requires com.io7m.jlexing.core;
   requires com.io7m.jranges.core;
+  requires com.io7m.junreachable.core;
+  requires io.vavr;
+  requires slf4j.api;
 
   exports com.io7m.jdextrosa.io;
 }

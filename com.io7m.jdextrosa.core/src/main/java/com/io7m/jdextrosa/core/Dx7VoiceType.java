@@ -65,25 +65,25 @@ public interface Dx7VoiceType
   }
 
   @Value.Default
-  default int pitchEnvelopeR1Time()
+  default int pitchEnvelopeR1Rate()
   {
     return 99;
   }
 
   @Value.Default
-  default int pitchEnvelopeR2Time()
+  default int pitchEnvelopeR2Rate()
   {
     return 99;
   }
 
   @Value.Default
-  default int pitchEnvelopeR3Time()
+  default int pitchEnvelopeR3Rate()
   {
     return 99;
   }
 
   @Value.Default
-  default int pitchEnvelopeR4Time()
+  default int pitchEnvelopeR4Rate()
   {
     return 99;
   }
@@ -170,10 +170,10 @@ public interface Dx7VoiceType
       "Valid levels");
 
     RangeCheck.checkIncludedInInteger(
-      this.pitchEnvelopeR1Time(),
-      "Pitch R1 Time",
+      this.pitchEnvelopeR1Rate(),
+      "Pitch R1 Rate",
       RangeInclusiveI.of(0, 99),
-      "Valid times");
+      "Valid rates");
 
     RangeCheck.checkIncludedInInteger(
       this.pitchEnvelopeR2Level(),
@@ -182,10 +182,10 @@ public interface Dx7VoiceType
       "Valid levels");
 
     RangeCheck.checkIncludedInInteger(
-      this.pitchEnvelopeR2Time(),
-      "Pitch R2 Time",
+      this.pitchEnvelopeR2Rate(),
+      "Pitch R2 Rate",
       RangeInclusiveI.of(0, 99),
-      "Valid times");
+      "Valid rates");
 
     RangeCheck.checkIncludedInInteger(
       this.pitchEnvelopeR3Level(),
@@ -194,10 +194,10 @@ public interface Dx7VoiceType
       "Valid levels");
 
     RangeCheck.checkIncludedInInteger(
-      this.pitchEnvelopeR3Time(),
-      "Pitch R3 Time",
+      this.pitchEnvelopeR3Rate(),
+      "Pitch R3 Rate",
       RangeInclusiveI.of(0, 99),
-      "Valid times");
+      "Valid rates");
 
     RangeCheck.checkIncludedInInteger(
       this.pitchEnvelopeR4Level(),
@@ -206,10 +206,10 @@ public interface Dx7VoiceType
       "Valid levels");
 
     RangeCheck.checkIncludedInInteger(
-      this.pitchEnvelopeR4Time(),
-      "Pitch R4 Time",
+      this.pitchEnvelopeR4Rate(),
+      "Pitch R4 Rate",
       RangeInclusiveI.of(0, 99),
-      "Valid times");
+      "Valid rates");
 
     RangeCheck.checkIncludedInInteger(
       this.lfoPitchModulationDepth(),
@@ -224,7 +224,7 @@ public interface Dx7VoiceType
       "Valid pitch modulation sensitivity values");
 
     RangeCheck.checkIncludedInInteger(
-      this.lfoPitchModulationDepth(),
+      this.lfoAmplitudeModulationDepth(),
       "LFO Amplitude Modulation Depth",
       RangeInclusiveI.of(0, 99),
       "Valid amplitude modulation depth values");

@@ -28,6 +28,8 @@
     <module>com.io7m.jdextrosa.documentation</module>
     <module>com.io7m.jdextrosa.io</module>
     <module>com.io7m.jdextrosa.cmdline</module>
+    <module>com.io7m.jdextrosa.io.xml</module>
+    <module>com.io7m.jdextrosa.io.xml.spi</module>
   </modules>
 
   <properties>
@@ -131,6 +133,11 @@
       </dependency>
 
       <dependency>
+        <groupId>net.sf.saxon</groupId>
+        <artifactId>Saxon-HE</artifactId>
+        <version>9.8.0-7</version>
+      </dependency>
+      <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>1.7.25</version>
@@ -147,8 +154,18 @@
       </dependency>
 
       <dependency>
+        <groupId>com.github.marschall</groupId>
+        <artifactId>memoryfilesystem</artifactId>
+        <version>1.1.0</version>
+      </dependency>
+      <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-engine</artifactId>
+        <version>5.0.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
         <version>5.0.1</version>
       </dependency>
     </dependencies>

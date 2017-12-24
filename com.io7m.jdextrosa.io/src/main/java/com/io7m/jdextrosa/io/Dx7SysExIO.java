@@ -390,34 +390,34 @@ public final class Dx7SysExIO
         final Dx7Operator.Builder op_b = Dx7Operator.builder();
         op_b.setId(Dx7OperatorID.of(this.op_index));
 
-        final int env_r1_time =
+        final int env_r1_rate =
           this.checkConstrainValueRange(
             this.buffer[this.position.localOffset()],
-            "R1 Time",
+            "R1 Rate",
             0,
             99);
         this.position.increase(1L);
 
-        final int env_r2_time =
+        final int env_r2_rate =
           this.checkConstrainValueRange(
             this.buffer[this.position.localOffset()],
-            "R2 Time",
+            "R2 Rate",
             0,
             99);
         this.position.increase(1L);
 
-        final int env_r3_time =
+        final int env_r3_rate =
           this.checkConstrainValueRange(
             this.buffer[this.position.localOffset()],
-            "R3 Time",
+            "R3 Rate",
             0,
             99);
         this.position.increase(1L);
 
-        final int env_r4_time =
+        final int env_r4_rate =
           this.checkConstrainValueRange(
             this.buffer[this.position.localOffset()],
-            "R4 Time",
+            "R4 Rate",
             0,
             99);
         this.position.increase(1L);
@@ -564,10 +564,10 @@ public final class Dx7SysExIO
             99);
         this.position.increase(1L);
 
-        op_b.setEnvelopeR1Time(env_r1_time);
-        op_b.setEnvelopeR2Time(env_r2_time);
-        op_b.setEnvelopeR3Time(env_r3_time);
-        op_b.setEnvelopeR4Time(env_r4_time);
+        op_b.setEnvelopeR1Rate(env_r1_rate);
+        op_b.setEnvelopeR2Rate(env_r2_rate);
+        op_b.setEnvelopeR3Rate(env_r3_rate);
+        op_b.setEnvelopeR4Rate(env_r4_rate);
         op_b.setEnvelopeR1Level(env_r1_level);
         op_b.setEnvelopeR2Level(env_r2_level);
         op_b.setEnvelopeR3Level(env_r3_level);
@@ -725,35 +725,35 @@ public final class Dx7SysExIO
           this.position.localOffset() == 102,
           x -> "Must have consumed 102 octets");
 
-        vb.setPitchEnvelopeR1Time(
+        vb.setPitchEnvelopeR1Rate(
           this.checkConstrainValueRange(
             this.buffer[this.position.localOffset()],
-            "Pitch Envelope R1 Time",
+            "Pitch Envelope R1 Rate",
             0,
             99));
         this.position.increase(1L);
 
-        vb.setPitchEnvelopeR2Time(
+        vb.setPitchEnvelopeR2Rate(
           this.checkConstrainValueRange(
             this.buffer[this.position.localOffset()],
-            "Pitch Envelope R2 Time",
+            "Pitch Envelope R2 Rate",
             0,
             99));
 
         this.position.increase(1L);
 
-        vb.setPitchEnvelopeR3Time(
+        vb.setPitchEnvelopeR3Rate(
           this.checkConstrainValueRange(
             this.buffer[this.position.localOffset()],
-            "Pitch Envelope R3 Time",
+            "Pitch Envelope R3 Rate",
             0,
             99));
         this.position.increase(1L);
 
-        vb.setPitchEnvelopeR4Time(
+        vb.setPitchEnvelopeR4Rate(
           this.checkConstrainValueRange(
             this.buffer[this.position.localOffset()],
-            "Pitch Envelope R4 Time",
+            "Pitch Envelope R4 Rate",
             0,
             99));
         this.position.increase(1L);
@@ -827,7 +827,7 @@ public final class Dx7SysExIO
           return Optional.empty();
         }
 
-        return Optional.of(Dx7VoiceNamed.of(this.voice_name, vb.build()));
+        return Optional.of(Dx7VoiceNamed.of(this.voice_name, vb.build(), Optional.empty()));
       }
     }
 

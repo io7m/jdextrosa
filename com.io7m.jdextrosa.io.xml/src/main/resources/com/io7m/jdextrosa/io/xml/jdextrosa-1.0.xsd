@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<schema
+  xmlns="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="schema:com.io7m.jdextrosa:1.0"
+  xmlns:j="schema:com.io7m.jdextrosa:1.0">
+
+  <simpleType name="dx7OperatorIndexType">
+    <restriction base="int">
+      <minInclusive value="1"/>
+      <maxInclusive value="6"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7OscFrequencyCoarseType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="31"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7OscFrequencyFineType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="99"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7OscFrequencyDetuneType">
+    <restriction base="int">
+      <minInclusive value="-7"/>
+      <maxInclusive value="7"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7OscModeType">
+    <restriction base="string">
+      <enumeration value="ratio"/>
+      <enumeration value="fixed"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7OscOutputLevelType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="99"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7OscEnvelopeLevelType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="99"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7OscEnvelopeRateType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="99"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7OscVelocitySensitivityType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="7"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7OscAmplitudeModulationSensitivityType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="3"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7OscLevelScalingBreakpointType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="99"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7OscLevelScalingLeftDepthType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="99"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7OscLevelScalingRightDepthType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="99"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7OscLevelScalingCurveType">
+    <restriction base="string">
+      <enumeration value="linearNegative"/>
+      <enumeration value="exponentialNegative"/>
+      <enumeration value="exponentialPositive"/>
+      <enumeration value="linearPositive"/>
+    </restriction>
+  </simpleType>
+
+  <element name="dx7-operator">
+    <complexType>
+      <attribute name="id" type="j:dx7OperatorIndexType" use="required"/>
+      <attribute name="enabled" type="boolean" use="required"/>
+      <attribute name="frequencyCoarse" type="j:dx7OscFrequencyCoarseType" use="required"/>
+      <attribute name="frequencyFine" type="j:dx7OscFrequencyFineType" use="required"/>
+      <attribute name="frequencyDetune" type="j:dx7OscFrequencyDetuneType" use="required"/>
+      <attribute name="mode" type="j:dx7OscModeType" use="required"/>
+      <attribute name="output" type="j:dx7OscOutputLevelType" use="required"/>
+      <attribute name="envelopeR1Rate" type="j:dx7OscEnvelopeRateType" use="required"/>
+      <attribute name="envelopeR2Rate" type="j:dx7OscEnvelopeRateType" use="required"/>
+      <attribute name="envelopeR3Rate" type="j:dx7OscEnvelopeRateType" use="required"/>
+      <attribute name="envelopeR4Rate" type="j:dx7OscEnvelopeRateType" use="required"/>
+      <attribute name="envelopeR1Level" type="j:dx7OscEnvelopeLevelType" use="required"/>
+      <attribute name="envelopeR2Level" type="j:dx7OscEnvelopeLevelType" use="required"/>
+      <attribute name="envelopeR3Level" type="j:dx7OscEnvelopeLevelType" use="required"/>
+      <attribute name="envelopeR4Level" type="j:dx7OscEnvelopeLevelType" use="required"/>
+      <attribute name="velocitySensitivity" type="j:dx7OscVelocitySensitivityType" use="required"/>
+      <attribute name="lfoAmplitudeModulationSensitivity" type="j:dx7OscAmplitudeModulationSensitivityType" use="required"/>
+      <attribute name="levelScalingBreakpoint" type="j:dx7OscLevelScalingBreakpointType" use="required"/>
+      <attribute name="levelScalingLeftDepth" type="j:dx7OscLevelScalingLeftDepthType" use="required"/>
+      <attribute name="levelScalingRightDepth" type="j:dx7OscLevelScalingRightDepthType" use="required"/>
+      <attribute name="levelScalingLeftCurve" type="j:dx7OscLevelScalingCurveType" use="required"/>
+      <attribute name="levelScalingRightCurve" type="j:dx7OscLevelScalingCurveType" use="required"/>
+    </complexType>
+  </element>
+
+  <simpleType name="dx7VoiceNameType">
+    <restriction base="string">
+      <minLength value="10"/>
+      <maxLength value="10"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7AlgorithmType">
+    <restriction base="int">
+      <minInclusive value="1"/>
+      <maxInclusive value="32"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7FeedbackType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="7"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7TransposeType">
+    <restriction base="int">
+      <minInclusive value="-24"/>
+      <maxInclusive value="24"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7PitchEnvelopeLevelType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="99"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7PitchEnvelopeRateType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="99"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7LFOPitchModulationDepthType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="99"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7LFOPitchModulationSensitivityType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="7"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7LFOAmplitudeModulationDepthType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="99"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7LFORateType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="99"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7LFODelayType">
+    <restriction base="int">
+      <minInclusive value="0"/>
+      <maxInclusive value="99"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="dx7LFOWaveformType">
+    <restriction base="string">
+      <enumeration value="triangle"/>
+      <enumeration value="sawDown"/>
+      <enumeration value="sawUp"/>
+      <enumeration value="square"/>
+      <enumeration value="sine"/>
+      <enumeration value="sampleAndHold"/>
+    </restriction>
+  </simpleType>
+
+  <element name="dx7-lfo">
+    <complexType>
+      <attribute name="pitchModulationDepth" type="j:dx7LFOPitchModulationDepthType" use="required"/>
+      <attribute name="pitchModulationSensitivity" type="j:dx7LFOPitchModulationSensitivityType" use="required"/>
+      <attribute name="amplitudeModulationDepth" type="j:dx7LFOAmplitudeModulationDepthType" use="required"/>
+      <attribute name="rate" type="j:dx7LFORateType" use="required"/>
+      <attribute name="delay" type="j:dx7LFODelayType" use="required"/>
+      <attribute name="keySynchronize" type="boolean" use="required"/>
+      <attribute name="waveform" type="j:dx7LFOWaveformType" use="required"/>
+    </complexType>
+  </element>
+
+  <element name="dx7-voice-metadata">
+    <complexType>
+      <attribute name="source" type="anyURI" use="required"/>
+      <attribute name="id" type="anyURI" use="required"/>
+    </complexType>
+  </element>
+
+  <element name="dx7-voice">
+    <complexType>
+      <sequence minOccurs="1" maxOccurs="1">
+        <sequence minOccurs="0" maxOccurs="1">
+          <element ref="j:dx7-voice-metadata"/>
+        </sequence>
+        <sequence minOccurs="6" maxOccurs="6">
+          <element ref="j:dx7-operator"/>
+        </sequence>
+        <element ref="j:dx7-lfo"/>
+      </sequence>
+      <attribute name="name" type="j:dx7VoiceNameType" use="required"/>
+      <attribute name="algorithm" type="j:dx7AlgorithmType" use="required"/>
+      <attribute name="feedback" type="j:dx7FeedbackType" use="required"/>
+      <attribute name="transpose" type="j:dx7TransposeType" use="required"/>
+      <attribute name="pitchEnvelopeR1Level" type="j:dx7PitchEnvelopeLevelType" use="required"/>
+      <attribute name="pitchEnvelopeR2Level" type="j:dx7PitchEnvelopeLevelType" use="required"/>
+      <attribute name="pitchEnvelopeR3Level" type="j:dx7PitchEnvelopeLevelType" use="required"/>
+      <attribute name="pitchEnvelopeR4Level" type="j:dx7PitchEnvelopeLevelType" use="required"/>
+      <attribute name="pitchEnvelopeR1Rate" type="j:dx7PitchEnvelopeRateType" use="required"/>
+      <attribute name="pitchEnvelopeR2Rate" type="j:dx7PitchEnvelopeRateType" use="required"/>
+      <attribute name="pitchEnvelopeR3Rate" type="j:dx7PitchEnvelopeRateType" use="required"/>
+      <attribute name="pitchEnvelopeR4Rate" type="j:dx7PitchEnvelopeRateType" use="required"/>
+    </complexType>
+
+    <unique name="dx7OperatorIDsMustBeUnique">
+      <selector xpath="j:dx7-operator"/>
+      <field xpath="@id"/>
+    </unique>
+  </element>
+
+  <element name="dx7-voices">
+    <complexType>
+      <sequence minOccurs="0" maxOccurs="unbounded">
+        <element ref="j:dx7-voice"/>
+      </sequence>
+    </complexType>
+
+    <unique name="dx7VoiceIDsMustBeUnique">
+      <selector xpath="j:dx7-voice/j:dx7-voice-metadata"/>
+      <field xpath="@id"/>
+    </unique>
+  </element>
+
+</schema>
