@@ -242,7 +242,10 @@ public final class Dx7XMLParsers
         final Dx7XMLFormatProviderType format = format_opt.get();
         LOG.debug("instantiating format provider content handler: {}", format);
         this.sub_handler =
-          format.createParserContentHandler(this.request, this.errors, this.locator);
+          format.createParserContentHandler(
+            this.request,
+            this.errors,
+            this.locator);
         this.reader.setContentHandler(this.sub_handler);
         this.reader.setErrorHandler(this.sub_handler);
         return;

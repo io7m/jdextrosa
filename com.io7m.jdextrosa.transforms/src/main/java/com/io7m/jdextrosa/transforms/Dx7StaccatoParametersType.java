@@ -23,13 +23,6 @@ import org.immutables.value.Value;
 @Value.Immutable
 public interface Dx7StaccatoParametersType
 {
-  enum AffectOperators
-  {
-    AFFECT_CARRIERS,
-    AFFECT_MODULATORS,
-    AFFECT_ALL
-  }
-
   @Value.Parameter
   AffectOperators affect();
 
@@ -38,4 +31,11 @@ public interface Dx7StaccatoParametersType
 
   @Value.Parameter
   boolean modifyRelease();
+
+  enum AffectOperators
+  {
+    AFFECT_CARRIERS,
+    AFFECT_MODULATORS,
+    AFFECT_ALL
+  }
 }

@@ -16,8 +16,6 @@
 
 package com.io7m.jdextrosa.io.xml.spi;
 
-import com.io7m.jdextrosa.io.xml.spi.Dx7XMLParseError;
-import com.io7m.jdextrosa.io.xml.spi.Dx7XMLParseErrorType;
 import com.io7m.jlexing.core.LexicalPosition;
 import io.vavr.collection.Vector;
 import org.xml.sax.SAXException;
@@ -41,57 +39,6 @@ public final class Dx7XMLErrorLog
   public Dx7XMLErrorLog()
   {
     this.errors = Vector.empty();
-  }
-
-  private void logError(
-    final Dx7XMLParseError e)
-  {
-    this.errors = this.errors.append(
-      Objects.requireNonNull(e, "Error"));
-  }
-
-  /**
-   * Add the given parse error.
-   *
-   * @param e The parse error
-   */
-
-  public void addError(
-    final Dx7XMLParseError e)
-  {
-    this.logError(Objects.requireNonNull(e, "Error"));
-  }
-
-  /**
-   * @return The current (immutable) vector of errors
-   */
-
-  public Vector<Dx7XMLParseError> errors()
-  {
-    return this.errors;
-  }
-
-  /**
-   * Add a warning based on the given exception
-   *
-   * @param e The exception
-   */
-
-  public void warning(
-    final SAXParseException e)
-  {
-    this.logError(
-      Dx7XMLParseError.builder()
-        .setException(e)
-        .setLexical(
-          LexicalPosition.<URI>builder()
-            .setFile(URI.create(e.getSystemId()))
-            .setColumn(e.getColumnNumber())
-            .setLine(e.getLineNumber())
-            .build())
-        .setSeverity(Dx7XMLParseErrorType.Severity.WARNING)
-        .setMessage(e.getMessage())
-        .build());
   }
 
   /**
@@ -147,6 +94,57 @@ public final class Dx7XMLErrorLog
       .setSeverity(Dx7XMLParseErrorType.Severity.ERROR)
       .setMessage(e.getMessage())
       .build();
+  }
+
+  private void logError(
+    final Dx7XMLParseError e)
+  {
+    this.errors = this.errors.append(
+      Objects.requireNonNull(e, "Error"));
+  }
+
+  /**
+   * Add the given parse error.
+   *
+   * @param e The parse error
+   */
+
+  public void addError(
+    final Dx7XMLParseError e)
+  {
+    this.logError(Objects.requireNonNull(e, "Error"));
+  }
+
+  /**
+   * @return The current (immutable) vector of errors
+   */
+
+  public Vector<Dx7XMLParseError> errors()
+  {
+    return this.errors;
+  }
+
+  /**
+   * Add a warning based on the given exception
+   *
+   * @param e The exception
+   */
+
+  public void warning(
+    final SAXParseException e)
+  {
+    this.logError(
+      Dx7XMLParseError.builder()
+        .setException(e)
+        .setLexical(
+          LexicalPosition.<URI>builder()
+            .setFile(URI.create(e.getSystemId()))
+            .setColumn(e.getColumnNumber())
+            .setLine(e.getLineNumber())
+            .build())
+        .setSeverity(Dx7XMLParseErrorType.Severity.WARNING)
+        .setMessage(e.getMessage())
+        .build());
   }
 
   /**

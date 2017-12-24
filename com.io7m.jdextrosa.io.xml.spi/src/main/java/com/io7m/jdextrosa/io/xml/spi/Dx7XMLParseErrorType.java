@@ -57,25 +57,6 @@ public interface Dx7XMLParseErrorType extends LexicalType<URI>
   @Value.Parameter
   Optional<Exception> exception();
 
-  /**
-   * The severity of the error.
-   */
-
-  enum Severity
-  {
-    /**
-     * A warning.
-     */
-
-    WARNING,
-
-    /**
-     * An error.
-     */
-
-    ERROR
-  }
-
   default String show()
   {
     final StringBuilder sb = new StringBuilder(128);
@@ -94,5 +75,24 @@ public interface Dx7XMLParseErrorType extends LexicalType<URI>
       sb.append(")");
     });
     return sb.toString();
+  }
+
+  /**
+   * The severity of the error.
+   */
+
+  enum Severity
+  {
+    /**
+     * A warning.
+     */
+
+    WARNING,
+
+    /**
+     * An error.
+     */
+
+    ERROR
   }
 }

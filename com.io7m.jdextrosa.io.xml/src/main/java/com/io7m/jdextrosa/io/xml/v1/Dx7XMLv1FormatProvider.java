@@ -48,6 +48,15 @@ public final class Dx7XMLv1FormatProvider implements Dx7XMLFormatProviderType
 
   private final Configuration config;
 
+  /**
+   * Instantiate a format provider.
+   */
+
+  public Dx7XMLv1FormatProvider()
+  {
+    this.config = new Configuration();
+  }
+
   @Override
   public String toString()
   {
@@ -56,15 +65,6 @@ public final class Dx7XMLv1FormatProvider implements Dx7XMLFormatProviderType
     sb.append(Dx7XMLv1FormatProvider.class.getCanonicalName());
     sb.append("]");
     return sb.toString();
-  }
-
-  /**
-   * Instantiate a format provider.
-   */
-
-  public Dx7XMLv1FormatProvider()
-  {
-    this.config = new Configuration();
   }
 
   @Override

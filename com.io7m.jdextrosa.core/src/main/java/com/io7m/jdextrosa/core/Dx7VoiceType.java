@@ -143,10 +143,16 @@ public interface Dx7VoiceType
   }
 
   @Value.Default
-  default LFOWave lfoWave() { return LFOWave.LFO_TRIANGLE; }
+  default LFOWave lfoWave()
+  {
+    return LFOWave.LFO_TRIANGLE;
+  }
 
   @Value.Default
-  default boolean lfoKeySync() { return true; }
+  default boolean lfoKeySync()
+  {
+    return true;
+  }
 
   @Value.Check
   default void checkPreconditions()
@@ -263,12 +269,18 @@ public interface Dx7VoiceType
       final int value)
     {
       switch (value) {
-        case 0: return LFO_TRIANGLE;
-        case 1: return LFO_SAW_DOWN;
-        case 2: return LFO_SAW_UP;
-        case 3: return LFO_SQUARE;
-        case 4: return LFO_SINE;
-        case 5: return LFO_SAMPLE_HOLD;
+        case 0:
+          return LFO_TRIANGLE;
+        case 1:
+          return LFO_SAW_DOWN;
+        case 2:
+          return LFO_SAW_UP;
+        case 3:
+          return LFO_SQUARE;
+        case 4:
+          return LFO_SINE;
+        case 5:
+          return LFO_SAMPLE_HOLD;
         default: {
           throw new IllegalArgumentException("No LFO waveform for value: " + value);
         }

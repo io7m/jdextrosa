@@ -17,8 +17,6 @@
 package com.io7m.jdextrosa.io;
 
 import com.io7m.jdextrosa.core.DxImmutableStyleType;
-import com.io7m.jlexing.core.LexicalPosition;
-import com.io7m.jlexing.core.LexicalType;
 import org.immutables.value.Value;
 
 import java.net.URI;
@@ -67,6 +65,17 @@ public interface Dx7ParseErrorType
   @Value.Parameter
   Optional<Exception> exception();
 
+  default String show()
+  {
+    final StringBuilder sb = new StringBuilder(128);
+    sb.append(this.file());
+    sb.append("[0x");
+    sb.append(Long.toUnsignedString(this.offset(), 16));
+    sb.append("]: ");
+    sb.append(this.message());
+    return sb.toString();
+  }
+
   /**
    * The severity of the error.
    */
@@ -84,16 +93,5 @@ public interface Dx7ParseErrorType
      */
 
     ERROR
-  }
-
-  default String show()
-  {
-    final StringBuilder sb = new StringBuilder(128);
-    sb.append(this.file());
-    sb.append("[0x");
-    sb.append(Long.toUnsignedString(this.offset(), 16));
-    sb.append("]: ");
-    sb.append(this.message());
-    return sb.toString();
   }
 }

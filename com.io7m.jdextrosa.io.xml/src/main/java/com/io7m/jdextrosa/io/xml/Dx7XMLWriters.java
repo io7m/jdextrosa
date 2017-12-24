@@ -37,6 +37,13 @@ public final class Dx7XMLWriters
         .toVector();
   }
 
+  private static boolean namespaceMatches(
+    final Dx7XMLWriterRequest request,
+    final Dx7XMLFormatProviderType p)
+  {
+    return Objects.equals(p.schema().namespace(), request.schema());
+  }
+
   public Dx7XMLWriterType createWriter(
     final Dx7XMLWriterRequest request)
     throws Dx7WriterConfigurationException
@@ -55,12 +62,5 @@ public final class Dx7XMLWriters
 
     throw new Dx7WriterConfigurationException(
       "No writer available for schema: " + request.schema());
-  }
-
-  private static boolean namespaceMatches(
-    final Dx7XMLWriterRequest request,
-    final Dx7XMLFormatProviderType p)
-  {
-    return Objects.equals(p.schema().namespace(), request.schema());
   }
 }

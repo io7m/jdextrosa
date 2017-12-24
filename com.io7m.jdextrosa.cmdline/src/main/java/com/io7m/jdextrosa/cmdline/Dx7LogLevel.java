@@ -16,8 +16,8 @@
 
 package com.io7m.jdextrosa.cmdline;
 
-import com.io7m.junreachable.UnreachableCodeException;
 import ch.qos.logback.classic.Level;
+import com.io7m.junreachable.UnreachableCodeException;
 
 import java.util.Objects;
 

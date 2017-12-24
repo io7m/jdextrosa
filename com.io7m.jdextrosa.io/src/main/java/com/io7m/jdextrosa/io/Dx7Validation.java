@@ -24,8 +24,7 @@ import io.vavr.control.Validation;
 import java.util.function.Function;
 
 /**
- * Extra methods that {@link Validation} should have but
- * doesn't.
+ * Extra methods that {@link Validation} should have but doesn't.
  */
 
 final class Dx7Validation

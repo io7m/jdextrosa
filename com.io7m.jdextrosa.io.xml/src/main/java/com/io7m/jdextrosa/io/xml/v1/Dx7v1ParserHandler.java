@@ -24,7 +24,7 @@ import java.util.Objects;
 
 import static com.io7m.jdextrosa.core.Dx7OperatorType.LevelScalingCurve;
 import static com.io7m.jdextrosa.core.Dx7OperatorType.OscillatorMode;
-import static com.io7m.jdextrosa.core.Dx7VoiceType.*;
+import static com.io7m.jdextrosa.core.Dx7VoiceType.LFOWave;
 import static java.lang.Integer.parseInt;
 import static java.lang.Integer.parseUnsignedInt;
 
@@ -60,6 +60,44 @@ final class Dx7v1ParserHandler
     this.errors = Objects.requireNonNull(in_errors, "Errors");
     this.locator = Objects.requireNonNull(in_locator, "Locator");
     this.voices = Vector.empty();
+  }
+
+  private static LFOWave waveform(
+    final String value)
+  {
+    switch (value) {
+      case "triangle":
+        return LFOWave.LFO_TRIANGLE;
+      case "sawDown":
+        return LFOWave.LFO_SAW_DOWN;
+      case "sawUp":
+        return LFOWave.LFO_SAW_UP;
+      case "square":
+        return LFOWave.LFO_SQUARE;
+      case "sine":
+        return LFOWave.LFO_SINE;
+      case "sampleAndHold":
+        return LFOWave.LFO_SAMPLE_HOLD;
+      default:
+        throw new UnreachableCodeException();
+    }
+  }
+
+  private static LevelScalingCurve curve(
+    final String value)
+  {
+    switch (value) {
+      case "linearNegative":
+        return LevelScalingCurve.LINEAR_NEGATIVE;
+      case "linearPositive":
+        return LevelScalingCurve.LINEAR_POSITIVE;
+      case "exponentialNegative":
+        return LevelScalingCurve.EXPONENTIAL_NEGATIVE;
+      case "exponentialPositive":
+        return LevelScalingCurve.EXPONENTIAL_POSITIVE;
+      default:
+        throw new UnreachableCodeException();
+    }
   }
 
   @Override
@@ -160,27 +198,6 @@ final class Dx7v1ParserHandler
             new IllegalArgumentException(name));
         }
       }
-    }
-  }
-
-  private static LFOWave waveform(
-    final String value)
-  {
-    switch (value) {
-      case "triangle":
-        return LFOWave.LFO_TRIANGLE;
-      case "sawDown":
-        return LFOWave.LFO_SAW_DOWN;
-      case "sawUp":
-        return LFOWave.LFO_SAW_UP;
-      case "square":
-        return LFOWave.LFO_SQUARE;
-      case "sine":
-        return LFOWave.LFO_SINE;
-      case "sampleAndHold":
-        return LFOWave.LFO_SAMPLE_HOLD;
-      default:
-        throw new UnreachableCodeException();
     }
   }
 
@@ -320,23 +337,6 @@ final class Dx7v1ParserHandler
             new IllegalArgumentException(name));
         }
       }
-    }
-  }
-
-  private static LevelScalingCurve curve(
-    final String value)
-  {
-    switch (value) {
-      case "linearNegative":
-        return LevelScalingCurve.LINEAR_NEGATIVE;
-      case "linearPositive":
-        return LevelScalingCurve.LINEAR_POSITIVE;
-      case "exponentialNegative":
-        return LevelScalingCurve.EXPONENTIAL_NEGATIVE;
-      case "exponentialPositive":
-        return LevelScalingCurve.EXPONENTIAL_POSITIVE;
-      default:
-        throw new UnreachableCodeException();
     }
   }
 

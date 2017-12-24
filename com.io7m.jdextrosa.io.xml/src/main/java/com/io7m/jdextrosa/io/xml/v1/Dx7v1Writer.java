@@ -64,6 +64,56 @@ public final class Dx7v1Writer implements Dx7XMLWriterType
     this.writer = serializer.getXMLStreamWriter();
   }
 
+  private static String waveformToString(
+    final Dx7VoiceType.LFOWave wave)
+  {
+    switch (wave) {
+      case LFO_TRIANGLE:
+        return "triangle";
+      case LFO_SAW_DOWN:
+        return "sawDown";
+      case LFO_SAW_UP:
+        return "sawUp";
+      case LFO_SQUARE:
+        return "square";
+      case LFO_SINE:
+        return "sine";
+      case LFO_SAMPLE_HOLD:
+        return "sampleAndHold";
+    }
+
+    throw new UnreachableCodeException();
+  }
+
+  private static String curveToString(
+    final Dx7OperatorType.LevelScalingCurve c)
+  {
+    switch (c) {
+      case LINEAR_NEGATIVE:
+        return "linearNegative";
+      case EXPONENTIAL_NEGATIVE:
+        return "exponentialNegative";
+      case EXPONENTIAL_POSITIVE:
+        return "exponentialPositive";
+      case LINEAR_POSITIVE:
+        return "linearPositive";
+    }
+
+    throw new UnreachableCodeException();
+  }
+
+  private static String modeToString(
+    final Dx7OperatorType.OscillatorMode mode)
+  {
+    switch (mode) {
+      case RATIO:
+        return "ratio";
+      case FIXED:
+        return "fixed";
+    }
+    throw new UnreachableCodeException();
+  }
+
   @Override
   public void start()
     throws IOException
@@ -186,27 +236,6 @@ public final class Dx7v1Writer implements Dx7XMLWriterType
     this.writer.writeEndElement();
   }
 
-  private static String waveformToString(
-    final Dx7VoiceType.LFOWave wave)
-  {
-    switch (wave) {
-      case LFO_TRIANGLE:
-        return "triangle";
-      case LFO_SAW_DOWN:
-        return "sawDown";
-      case LFO_SAW_UP:
-        return "sawUp";
-      case LFO_SQUARE:
-        return "square";
-      case LFO_SINE:
-        return "sine";
-      case LFO_SAMPLE_HOLD:
-        return "sampleAndHold";
-    }
-
-    throw new UnreachableCodeException();
-  }
-
   private void writeOperator(
     final Dx7Operator op)
     throws XMLStreamException
@@ -289,35 +318,6 @@ public final class Dx7v1Writer implements Dx7XMLWriterType
       Integer.toUnsignedString(op.lfoAmplitudeModulationSensitivity()));
 
     this.writer.writeEndElement();
-  }
-
-  private static String curveToString(
-    final Dx7OperatorType.LevelScalingCurve c)
-  {
-    switch (c) {
-      case LINEAR_NEGATIVE:
-        return "linearNegative";
-      case EXPONENTIAL_NEGATIVE:
-        return "exponentialNegative";
-      case EXPONENTIAL_POSITIVE:
-        return "exponentialPositive";
-      case LINEAR_POSITIVE:
-        return "linearPositive";
-    }
-
-    throw new UnreachableCodeException();
-  }
-
-  private static String modeToString(
-    final Dx7OperatorType.OscillatorMode mode)
-  {
-    switch (mode) {
-      case RATIO:
-        return "ratio";
-      case FIXED:
-        return "fixed";
-    }
-    throw new UnreachableCodeException();
   }
 
   private void writeMetadata(

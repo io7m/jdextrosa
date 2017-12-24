@@ -45,7 +45,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -93,6 +92,57 @@ final class Dx7CommandConvert extends Dx7CommandRoot
     this.xml_writers = new Dx7XMLWriters();
   }
 
+  private static Vector<Dx7VoiceNamed> updateMetadata(
+    final Path file,
+    final Vector<Dx7VoiceNamed> voices)
+  {
+    return voices.map(
+      voice -> Dx7VoiceNamed.of(
+        voice.name(),
+        voice.voice(),
+        Optional.of(
+          Dx7VoiceMetadata.builder()
+            .setSource(file.toUri())
+            .setId(URI.create(file.toUri().toString() + "/" + makeNameSafe(voice)))
+            .build())));
+  }
+
+  private static String makeNameSafe(
+    final Dx7VoiceNamed voice)
+  {
+    try {
+      return URLEncoder.encode(voice.name(), "UTF-8");
+    } catch (final UnsupportedEncodingException e) {
+      throw new UnreachableCodeException(e);
+    }
+  }
+
+  private static Dx7Format inferFileFormat(
+    final Path path,
+    final Dx7Format format)
+  {
+    if (format != null) {
+      return format;
+    }
+
+    final String path_upper = path.toString().toUpperCase();
+    if (path_upper.endsWith(".SYSX")) {
+      return Dx7Format.DX7_FORMAT_BINARY_SYSEX_32_VOICE;
+    }
+    if (path_upper.endsWith(".SYX")) {
+      return Dx7Format.DX7_FORMAT_BINARY_SYSEX_32_VOICE;
+    }
+    if (path_upper.endsWith(".DX7")) {
+      return Dx7Format.DX7_FORMAT_BINARY_SYSEX_32_VOICE;
+    }
+    if (path_upper.endsWith(".XML")) {
+      return Dx7Format.DX7_FORMAT_XML;
+    }
+
+    throw new IllegalArgumentException(
+      "Could not infer file format from file name: " + path);
+  }
+
   @Override
   public Status execute()
     throws Exception
@@ -112,8 +162,9 @@ final class Dx7CommandConvert extends Dx7CommandRoot
       inferFileFormat(file_abs_output, this.format_output);
 
     final Vector<Dx7VoiceNamed> voices =
-      updateMetadata(file_abs_input,
-                     this.parse(file_abs_input, this.format_input));
+      updateMetadata(
+        file_abs_input,
+        this.parse(file_abs_input, this.format_input));
 
     this.write(voices, file_abs_output, this.format_output);
     return Status.SUCCESS;
@@ -160,31 +211,6 @@ final class Dx7CommandConvert extends Dx7CommandRoot
         writer.write(voices);
         writer.finish();
       }
-    }
-  }
-
-  private static Vector<Dx7VoiceNamed> updateMetadata(
-    final Path file,
-    final Vector<Dx7VoiceNamed> voices)
-  {
-    return voices.map(
-      voice -> Dx7VoiceNamed.of(
-        voice.name(),
-        voice.voice(),
-        Optional.of(
-          Dx7VoiceMetadata.builder()
-            .setSource(file.toUri())
-            .setId(URI.create(file.toUri().toString() + "/" + makeNameSafe(voice)))
-            .build())));
-  }
-
-  private static String makeNameSafe(
-    final Dx7VoiceNamed voice)
-  {
-    try {
-      return URLEncoder.encode(voice.name(), "UTF-8");
-    } catch (final UnsupportedEncodingException e) {
-      throw new UnreachableCodeException(e);
     }
   }
 
@@ -263,31 +289,5 @@ final class Dx7CommandConvert extends Dx7CommandRoot
 
       throw new IOException("At least one parse error occurred.");
     }
-  }
-
-  private static Dx7Format inferFileFormat(
-    final Path path,
-    final Dx7Format format)
-  {
-    if (format != null) {
-      return format;
-    }
-
-    final String path_upper = path.toString().toUpperCase();
-    if (path_upper.endsWith(".SYSX")) {
-      return Dx7Format.DX7_FORMAT_BINARY_SYSEX_32_VOICE;
-    }
-    if (path_upper.endsWith(".SYX")) {
-      return Dx7Format.DX7_FORMAT_BINARY_SYSEX_32_VOICE;
-    }
-    if (path_upper.endsWith(".DX7")) {
-      return Dx7Format.DX7_FORMAT_BINARY_SYSEX_32_VOICE;
-    }
-    if (path_upper.endsWith(".XML")) {
-      return Dx7Format.DX7_FORMAT_XML;
-    }
-
-    throw new IllegalArgumentException(
-      "Could not infer file format from file name: " + path);
   }
 }

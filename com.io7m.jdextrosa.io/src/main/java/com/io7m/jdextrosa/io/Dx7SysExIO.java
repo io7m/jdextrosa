@@ -103,9 +103,9 @@ public final class Dx7SysExIO
 
   private static final class PositionContext
   {
+    private final URI uri;
     private Optional<PositionContext> parent;
     private long local_offset;
-    private final URI uri;
 
     PositionContext(
       final Optional<PositionContext> in_parent,
@@ -113,6 +113,12 @@ public final class Dx7SysExIO
     {
       this.parent = Objects.requireNonNull(in_parent, "Parent");
       this.uri = Objects.requireNonNull(in_uri, "URI");
+    }
+
+    public static PositionContext withParent(
+      final PositionContext parent)
+    {
+      return new PositionContext(Optional.of(parent), parent.uri);
     }
 
     long offset()
@@ -126,12 +132,6 @@ public final class Dx7SysExIO
       final long octets)
     {
       this.local_offset += octets;
-    }
-
-    public static PositionContext withParent(
-      final PositionContext parent)
-    {
-      return new PositionContext(Optional.of(parent), parent.uri);
     }
 
     public int localOffset()
@@ -827,7 +827,10 @@ public final class Dx7SysExIO
           return Optional.empty();
         }
 
-        return Optional.of(Dx7VoiceNamed.of(this.voice_name, vb.build(), Optional.empty()));
+        return Optional.of(Dx7VoiceNamed.of(
+          this.voice_name,
+          vb.build(),
+          Optional.empty()));
       }
     }
 

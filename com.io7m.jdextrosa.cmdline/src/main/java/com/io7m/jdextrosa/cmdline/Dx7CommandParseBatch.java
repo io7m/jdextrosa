@@ -19,13 +19,10 @@ package com.io7m.jdextrosa.cmdline;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.io7m.jdextrosa.core.Dx7VoiceNamed;
-import com.io7m.jdextrosa.io.Dx7ParseError;
 import com.io7m.jdextrosa.io.Dx7SysExIO;
 import com.io7m.jdextrosa.io.Dx7SysExReaderType;
 import com.io7m.mutable.numbers.core.MutableInteger;
-import io.vavr.collection.Seq;
 import io.vavr.collection.Vector;
-import io.vavr.control.Validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
