@@ -15,31 +15,17 @@
  */
 
 /**
- * DX7 Librarian (XML I/O)
+ * DX7 Librarian (Transforms)
  */
 
-module com.io7m.jdextrosa.io.xml
+module com.io7m.jdextrosa.transforms
 {
   requires static org.immutables.value;
   requires static vavr.encodings;
 
-  requires java.xml;
-
-  requires com.io7m.jaffirm.core;
   requires com.io7m.jdextrosa.core;
-  requires com.io7m.jdextrosa.io.xml.spi;
-  requires com.io7m.jlexing.core;
-  requires com.io7m.jranges.core;
-  requires com.io7m.junreachable.core;
   requires io.vavr;
-  requires slf4j.api;
-  requires Saxon.HE;
+  requires com.io7m.junreachable.core;
 
-  exports com.io7m.jdextrosa.io.xml;
-  exports com.io7m.jdextrosa.io.xml.v1;
-
-  uses com.io7m.jdextrosa.io.xml.spi.Dx7XMLFormatProviderType;
-
-  provides com.io7m.jdextrosa.io.xml.spi.Dx7XMLFormatProviderType
-    with com.io7m.jdextrosa.io.xml.v1.Dx7XMLv1FormatProvider;
+  exports com.io7m.jdextrosa.transforms;
 }

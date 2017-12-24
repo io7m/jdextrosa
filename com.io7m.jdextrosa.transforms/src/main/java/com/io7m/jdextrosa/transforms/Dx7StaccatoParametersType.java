@@ -14,32 +14,28 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-/**
- * DX7 Librarian (XML I/O)
- */
+package com.io7m.jdextrosa.transforms;
 
-module com.io7m.jdextrosa.io.xml
+import com.io7m.jdextrosa.core.DxImmutableStyleType;
+import org.immutables.value.Value;
+
+@DxImmutableStyleType
+@Value.Immutable
+public interface Dx7StaccatoParametersType
 {
-  requires static org.immutables.value;
-  requires static vavr.encodings;
+  enum AffectOperators
+  {
+    AFFECT_CARRIERS,
+    AFFECT_MODULATORS,
+    AFFECT_ALL
+  }
 
-  requires java.xml;
+  @Value.Parameter
+  AffectOperators affect();
 
-  requires com.io7m.jaffirm.core;
-  requires com.io7m.jdextrosa.core;
-  requires com.io7m.jdextrosa.io.xml.spi;
-  requires com.io7m.jlexing.core;
-  requires com.io7m.jranges.core;
-  requires com.io7m.junreachable.core;
-  requires io.vavr;
-  requires slf4j.api;
-  requires Saxon.HE;
+  @Value.Parameter
+  boolean modifyAttack();
 
-  exports com.io7m.jdextrosa.io.xml;
-  exports com.io7m.jdextrosa.io.xml.v1;
-
-  uses com.io7m.jdextrosa.io.xml.spi.Dx7XMLFormatProviderType;
-
-  provides com.io7m.jdextrosa.io.xml.spi.Dx7XMLFormatProviderType
-    with com.io7m.jdextrosa.io.xml.v1.Dx7XMLv1FormatProvider;
+  @Value.Parameter
+  boolean modifyRelease();
 }

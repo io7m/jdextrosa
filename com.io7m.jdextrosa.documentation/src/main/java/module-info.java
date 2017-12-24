@@ -21,8 +21,22 @@
 module com.io7m.jdextrosa.documentation
 {
   requires static org.immutables.value;
+  requires static vavr.encodings;
 
+  requires java.xml;
+
+  requires Saxon.HE;
+  requires com.io7m.jaffirm.core;
   requires com.io7m.jdextrosa.core;
+  requires com.io7m.jdextrosa.io.xml.spi;
+  requires com.io7m.jdextrosa.io.xml;
+  requires com.io7m.jdextrosa.io;
+  requires com.io7m.jdextrosa.transforms;
+  requires com.io7m.jlexing.core;
+  requires com.io7m.jranges.core;
+  requires com.io7m.junreachable.core;
+  requires io.vavr;
+  requires slf4j.api;
 
   exports com.io7m.jdextrosa.documentation;
 }

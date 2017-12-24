@@ -30,6 +30,7 @@
     <module>com.io7m.jdextrosa.cmdline</module>
     <module>com.io7m.jdextrosa.io.xml</module>
     <module>com.io7m.jdextrosa.io.xml.spi</module>
+    <module>com.io7m.jdextrosa.transforms</module>
   </modules>
 
   <properties>

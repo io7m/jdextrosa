@@ -23,6 +23,8 @@ module com.io7m.jdextrosa.core
   requires static org.immutables.value;
 
   requires com.io7m.jranges.core;
+  requires com.io7m.junreachable.core;
+  requires io.vavr;
 
   exports com.io7m.jdextrosa.core;
 }
