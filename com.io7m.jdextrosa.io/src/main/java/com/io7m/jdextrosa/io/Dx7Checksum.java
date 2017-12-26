@@ -18,7 +18,7 @@ package com.io7m.jdextrosa.io;
 
 import com.io7m.junreachable.UnreachableCodeException;
 
-public final class Dx7Checksum
+final class Dx7Checksum
 {
   private Dx7Checksum()
   {
