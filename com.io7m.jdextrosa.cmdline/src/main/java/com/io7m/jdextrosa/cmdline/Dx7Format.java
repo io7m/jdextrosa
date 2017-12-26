@@ -33,6 +33,12 @@ public enum Dx7Format
   DX7_FORMAT_XML("xml"),
 
   /**
+   * A GZ compressed XML format.
+   */
+
+  DX7_FORMAT_XML_GZ("xml.gz"),
+
+  /**
    * A 32-voice binary SysEx format.
    */
 
@@ -69,6 +75,8 @@ public enum Dx7Format
       final String name)
     {
       switch (name) {
+        case "xml.gz":
+          return DX7_FORMAT_XML_GZ;
         case "xml":
           return DX7_FORMAT_XML;
         case "sysex-32":

@@ -728,6 +728,12 @@ final class Dx7Reader implements Dx7SysExReaderType
 
       {
         final int transpose_raw = this.stream.readByte();
+        this.checkConstrainValueRange(
+          transpose_raw,
+          "Transpose value",
+          0,
+          48);
+
         final int transpose = transpose_raw - 24;
         vb.setTranspose(transpose);
       }
