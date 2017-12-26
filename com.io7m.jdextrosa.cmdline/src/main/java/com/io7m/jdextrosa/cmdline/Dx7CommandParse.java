@@ -25,6 +25,7 @@ import io.vavr.collection.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,6 +45,12 @@ final class Dx7CommandParse extends Dx7CommandRoot
     description = "The sysex file")
   private List<Path> path;
 
+  @Parameter(
+    names = "-limit",
+    required = false,
+    description = "The limit on the number of voices to parse")
+  private int limit = Integer.MAX_VALUE;
+
   Dx7CommandParse()
   {
 
@@ -58,7 +65,8 @@ final class Dx7CommandParse extends Dx7CommandRoot
     }
 
     for (final Path file : this.path) {
-      try (InputStream stream = Files.newInputStream(file)) {
+      try (InputStream stream =
+             new BufferedInputStream(Files.newInputStream(file), 4096)) {
         final Dx7SysExReaderType reader =
           Dx7SysExIO.createReader(e -> {
             switch (e.severity()) {
@@ -73,7 +81,7 @@ final class Dx7CommandParse extends Dx7CommandRoot
             }
           }, file.toUri(), stream);
 
-        final Vector<Dx7VoiceNamed> voices = reader.parse();
+        final Vector<Dx7VoiceNamed> voices = reader.parseAtMost(this.limit);
         System.out.println(file + ": Parsed " + voices.size() + " voices");
       }
     }

@@ -14,18 +14,16 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.jdextrosa.tests.io.xml;
+package com.io7m.jdextrosa.tests.io;
 
 import com.io7m.jdextrosa.core.Dx7VoiceNamed;
+import com.io7m.jdextrosa.io.Dx7ParseErrorListenerType;
+import com.io7m.jdextrosa.io.Dx7SysExIO;
+import com.io7m.jdextrosa.io.Dx7SysExReaderType;
+import com.io7m.jdextrosa.io.Dx7SysExWriterType;
 import com.io7m.jdextrosa.io.xml.Dx7ParserConfigurationException;
 import com.io7m.jdextrosa.io.xml.Dx7WriterConfigurationException;
-import com.io7m.jdextrosa.io.xml.Dx7XMLParserType;
-import com.io7m.jdextrosa.io.xml.Dx7XMLParsers;
-import com.io7m.jdextrosa.io.xml.Dx7XMLWriters;
 import com.io7m.jdextrosa.io.xml.spi.Dx7XMLParseError;
-import com.io7m.jdextrosa.io.xml.spi.Dx7XMLParserRequest;
-import com.io7m.jdextrosa.io.xml.spi.Dx7XMLWriterRequest;
-import com.io7m.jdextrosa.io.xml.spi.Dx7XMLWriterType;
 import com.io7m.jdextrosa.tests.TestMemoryFilesystemExtension;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Vector;
@@ -39,7 +37,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -48,10 +45,10 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 @ExtendWith(TestMemoryFilesystemExtension.class)
-public final class Dx7XMLProviderRoundTripTest
+public final class Dx7SysExRoundTripTest
 {
   private static final Logger LOG =
-    LoggerFactory.getLogger(Dx7XMLProviderRoundTripTest.class);
+    LoggerFactory.getLogger(Dx7SysExRoundTripTest.class);
 
   private static InputStream resource(
     final String file)
@@ -59,7 +56,7 @@ public final class Dx7XMLProviderRoundTripTest
   {
     final String path = "/com/io7m/jdextrosa/tests/" + file;
     final InputStream stream =
-      Dx7XMLProviderRoundTripTest.class.getResourceAsStream(path);
+      Dx7SysExRoundTripTest.class.getResourceAsStream(path);
     if (stream == null) {
       throw new NoSuchFileException(path);
     }
@@ -87,23 +84,30 @@ public final class Dx7XMLProviderRoundTripTest
     final FileSystem fs)
     throws Exception
   {
-    copyResourceToMemoryFS(fs, "textures.xml");
+    copyResourceToMemoryFS(fs, "TEXTURES.SYX");
 
-    final Dx7XMLParsers parsers = new Dx7XMLParsers();
-    final Dx7XMLWriters writers = new Dx7XMLWriters();
+    final Path path0 = fs.getPath("/TEXTURES.SYX");
 
-    final Path root = fs.getPath("/");
-    final Path path0 = fs.getPath("/textures.xml");
+    final Dx7ParseErrorListenerType errors =
+      error -> LOG.error("error: {}", error);
 
-    final Vector<Dx7VoiceNamed> result0 =
-      this.parse(parsers, root, path0);
+    final Vector<Dx7VoiceNamed> result0 = this.parse(errors, path0);
 
-    final Path path1 = Files.createTempFile("dx7-sysex-", ".xml");
+    final Path path1 =
+      Files.createTempFile("dx7-sysex-", ".sysx");
+
     LOG.debug("path: {}", path1);
-    this.write(writers, result0, path1);
+    this.write(result0, path1);
 
-    final Vector<Dx7VoiceNamed> result1 = this.parse(parsers, root, path1);
-    Assertions.assertEquals(stripMetadata(result0), stripMetadata(result1));
+    final Vector<Dx7VoiceNamed> result1 = this.parse(errors, path1);
+    final Vector<Dx7VoiceNamed> m0 = stripMetadata(result0);
+    final Vector<Dx7VoiceNamed> m1 = stripMetadata(result1);
+
+    for (int index = 0; index < m0.size(); ++index) {
+      final Dx7VoiceNamed v0 = m0.get(index);
+      final Dx7VoiceNamed v1 = m1.get(index);
+      Assertions.assertEquals(v0, v1);
+    }
   }
 
   private static Vector<Dx7VoiceNamed> stripMetadata(
@@ -114,51 +118,27 @@ public final class Dx7XMLProviderRoundTripTest
   }
 
   private void write(
-    final Dx7XMLWriters writers,
-    final Vector<Dx7VoiceNamed> result0,
-    final Path path1)
+    final Vector<Dx7VoiceNamed> voices,
+    final Path path)
     throws IOException, Dx7WriterConfigurationException
   {
-    try (OutputStream stream = Files.newOutputStream(path1)) {
-      try (Dx7XMLWriterType p = writers.createWriter(
-        Dx7XMLWriterRequest.of(
-          URI.create("schema:com.io7m.jdextrosa:1.0"),
-          path1.toUri(),
-          stream))) {
-        p.start();
-        p.write(result0);
-        p.finish();
+    try (OutputStream stream = Files.newOutputStream(path)) {
+      try (Dx7SysExWriterType p = Dx7SysExIO.createWriter(path.toUri(), stream)) {
+        p.write(voices);
       }
       stream.flush();
     }
   }
 
   private Vector<Dx7VoiceNamed> parse(
-    final Dx7XMLParsers parsers,
-    final Path root,
-    final Path path0)
+    final Dx7ParseErrorListenerType errors,
+    final Path path)
     throws IOException, Dx7ParserConfigurationException
   {
-    final Vector<Dx7VoiceNamed> result0;
-    try (InputStream stream = Files.newInputStream(path0)) {
-      final Dx7XMLParserType p = parsers.create(
-        Dx7XMLParserRequest.of(root, path0.toUri(), stream));
-      final Validation<Seq<Dx7XMLParseError>, Vector<Dx7VoiceNamed>> r = p.parse();
-
-      this.dump(r);
-      Assertions.assertTrue(r.isValid());
-      result0 = r.get();
-    }
-    return result0;
-  }
-
-  private void dump(
-    final Validation<Seq<Dx7XMLParseError>, Vector<Dx7VoiceNamed>> r)
-  {
-    if (r.isValid()) {
-      LOG.debug("result: {}", r.get());
-    } else {
-      r.getError().forEach(e -> LOG.debug("result: {}", e));
+    try (InputStream stream = Files.newInputStream(path)) {
+      final Dx7SysExReaderType p =
+        Dx7SysExIO.createReader(errors, path.toUri(), stream);
+      return p.parse();
     }
   }
 }

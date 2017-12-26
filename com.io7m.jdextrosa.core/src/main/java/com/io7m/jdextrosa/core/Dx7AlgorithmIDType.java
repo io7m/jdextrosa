@@ -34,6 +34,11 @@ public interface Dx7AlgorithmIDType extends Comparable<Dx7AlgorithmIDType>
     return Integer.compare(this.id(), o.id());
   }
 
+  default int external()
+  {
+    return this.id() - 1;
+  }
+
   @Value.Check
   default void checkPreconditions()
   {

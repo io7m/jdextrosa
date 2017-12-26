@@ -16,15 +16,29 @@
 
 package com.io7m.jdextrosa.io;
 
-import com.io7m.jdextrosa.core.Dx7VoiceNamed;
-import io.vavr.collection.Vector;
+import com.io7m.junreachable.UnreachableCodeException;
 
-public interface Dx7SysExReaderType
+public final class Dx7Checksum
 {
-  default Vector<Dx7VoiceNamed> parse()
+  private Dx7Checksum()
   {
-    return this.parseAtMost(Integer.MAX_VALUE);
+    throw new UnreachableCodeException();
   }
 
-  Vector<Dx7VoiceNamed> parseAtMost(int limit);
+  static int checksumAdd(
+    final int checksum,
+    final byte[] data)
+  {
+    int c = checksum;
+    for (int index = 0; index < data.length; ++index) {
+      c = (c - data[index]) & 0xff;
+    }
+    return c;
+  }
+
+  static int checksumFinish(
+    final int c)
+  {
+    return c & 0x7f;
+  }
 }

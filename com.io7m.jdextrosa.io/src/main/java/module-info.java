@@ -29,6 +29,7 @@ module com.io7m.jdextrosa.io
   requires com.io7m.junreachable.core;
   requires io.vavr;
   requires slf4j.api;
+  requires org.apache.commons.io;
 
   exports com.io7m.jdextrosa.io;
 }

@@ -19,12 +19,11 @@ package com.io7m.jdextrosa.io;
 import com.io7m.jdextrosa.core.Dx7VoiceNamed;
 import io.vavr.collection.Vector;
 
-public interface Dx7SysExReaderType
-{
-  default Vector<Dx7VoiceNamed> parse()
-  {
-    return this.parseAtMost(Integer.MAX_VALUE);
-  }
+import java.io.Closeable;
+import java.io.IOException;
 
-  Vector<Dx7VoiceNamed> parseAtMost(int limit);
+public interface Dx7SysExWriterType extends Closeable
+{
+  void write(Vector<Dx7VoiceNamed> voices)
+    throws IOException;
 }

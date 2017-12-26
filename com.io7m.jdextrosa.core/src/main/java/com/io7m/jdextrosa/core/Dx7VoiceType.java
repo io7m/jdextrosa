@@ -124,6 +124,11 @@ public interface Dx7VoiceType
     return 0;
   }
 
+  default int lfoPitchModulationSensitivityPacked()
+  {
+    return this.lfoPitchModulationSensitivity() << 4;
+  }
+
   @Value.Default
   default int lfoAmplitudeModulationDepth()
   {
@@ -150,6 +155,12 @@ public interface Dx7VoiceType
 
   @Value.Default
   default boolean lfoKeySync()
+  {
+    return true;
+  }
+
+  @Value.Default
+  default boolean oscillatorKeySync()
   {
     return true;
   }
@@ -291,5 +302,7 @@ public interface Dx7VoiceType
     {
       return this.mode;
     }
+
+    public int packed() { return this.external() << 1; }
   }
 }

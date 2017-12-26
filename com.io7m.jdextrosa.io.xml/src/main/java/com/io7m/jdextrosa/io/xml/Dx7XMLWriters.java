@@ -37,13 +37,6 @@ public final class Dx7XMLWriters
         .toVector();
   }
 
-  private static boolean namespaceMatches(
-    final Dx7XMLWriterRequest request,
-    final Dx7XMLFormatProviderType p)
-  {
-    return Objects.equals(p.schema().namespace(), request.schema());
-  }
-
   public Dx7XMLWriterType createWriter(
     final Dx7XMLWriterRequest request)
     throws Dx7WriterConfigurationException

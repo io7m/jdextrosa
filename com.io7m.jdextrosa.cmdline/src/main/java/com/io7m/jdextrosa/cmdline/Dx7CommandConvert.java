@@ -22,6 +22,7 @@ import com.io7m.jdextrosa.core.Dx7VoiceMetadata;
 import com.io7m.jdextrosa.core.Dx7VoiceNamed;
 import com.io7m.jdextrosa.io.Dx7SysExIO;
 import com.io7m.jdextrosa.io.Dx7SysExReaderType;
+import com.io7m.jdextrosa.io.Dx7SysExWriterType;
 import com.io7m.jdextrosa.io.xml.Dx7ParserConfigurationException;
 import com.io7m.jdextrosa.io.xml.Dx7WriterConfigurationException;
 import com.io7m.jdextrosa.io.xml.Dx7XMLParserType;
@@ -189,8 +190,13 @@ final class Dx7CommandConvert extends Dx7CommandRoot
   private void writeSysEx32(
     final Vector<Dx7VoiceNamed> voices,
     final Path file)
+    throws IOException
   {
-    throw new UnimplementedCodeException();
+    try (OutputStream stream = Files.newOutputStream(file)) {
+      try (Dx7SysExWriterType writer = Dx7SysExIO.createWriter(file.toUri(), stream)) {
+        writer.write(voices);
+      }
+    }
   }
 
   private void writeXML(

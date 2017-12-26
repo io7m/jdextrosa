@@ -190,6 +190,10 @@ public final class Dx7v1Writer implements Dx7XMLWriterType
       "pitchEnvelopeR4Rate",
       Integer.toUnsignedString(voice.pitchEnvelopeR4Rate()));
 
+    this.writer.writeAttribute(
+      "oscillatorKeySynchronize",
+      Boolean.toString(voice.oscillatorKeySync()));
+
     if (voice_named.metadata().isPresent()) {
       this.writeMetadata(voice_named.metadata().get());
     }

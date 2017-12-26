@@ -16,15 +16,46 @@
 
 package com.io7m.jdextrosa.io;
 
-import com.io7m.jdextrosa.core.Dx7VoiceNamed;
-import io.vavr.collection.Vector;
+import java.util.Objects;
 
-public interface Dx7SysExReaderType
+final class Dx7TrackingErrorListener implements Dx7ParseErrorListenerType
 {
-  default Vector<Dx7VoiceNamed> parse()
+  private final Dx7ParseErrorListenerType delegate;
+  private boolean warning;
+  private boolean error;
+
+  Dx7TrackingErrorListener(
+    final Dx7ParseErrorListenerType in_delegate)
   {
-    return this.parseAtMost(Integer.MAX_VALUE);
+    this.delegate = Objects.requireNonNull(in_delegate, "Delegate");
   }
 
-  Vector<Dx7VoiceNamed> parseAtMost(int limit);
+  void reset()
+  {
+    this.warning = false;
+    this.error = false;
+  }
+
+  @Override
+  public void receiveError(
+    final Dx7ParseError in_error)
+  {
+    switch (in_error.severity()) {
+      case WARNING: {
+        this.warning = true;
+        break;
+      }
+      case ERROR: {
+        this.error = true;
+        break;
+      }
+    }
+
+    this.delegate.receiveError(in_error);
+  }
+
+  public boolean errorsEncountered()
+  {
+    return this.error;
+  }
 }

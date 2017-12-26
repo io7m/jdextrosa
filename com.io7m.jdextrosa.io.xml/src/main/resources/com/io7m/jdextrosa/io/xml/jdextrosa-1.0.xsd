@@ -254,6 +254,7 @@
       <attribute name="algorithm" type="j:dx7AlgorithmType" use="required"/>
       <attribute name="feedback" type="j:dx7FeedbackType" use="required"/>
       <attribute name="transpose" type="j:dx7TransposeType" use="required"/>
+      <attribute name="oscillatorKeySynchronize" type="boolean" use="required"/>
       <attribute name="pitchEnvelopeR1Level" type="j:dx7PitchEnvelopeLevelType" use="required"/>
       <attribute name="pitchEnvelopeR2Level" type="j:dx7PitchEnvelopeLevelType" use="required"/>
       <attribute name="pitchEnvelopeR3Level" type="j:dx7PitchEnvelopeLevelType" use="required"/>

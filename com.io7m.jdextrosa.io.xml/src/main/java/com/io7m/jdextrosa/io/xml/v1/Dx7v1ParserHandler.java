@@ -405,6 +405,11 @@ final class Dx7v1ParserHandler
           break;
         }
 
+        case "oscillatorKeySynchronize": {
+          this.voice_builder.setOscillatorKeySync(Boolean.parseBoolean(value));
+          break;
+        }
+
         default: {
           throw new UnreachableCodeException();
         }

@@ -177,6 +177,12 @@ public interface Dx7OperatorType
     return LevelScalingCurve.LINEAR_NEGATIVE;
   }
 
+  @Value.Default
+  default int rateScaling()
+  {
+    return 0;
+  }
+
   @Value.Check
   default void checkPreconditions()
   {
@@ -281,6 +287,12 @@ public interface Dx7OperatorType
       "R4 Rate",
       RangeInclusiveI.of(0, 99),
       "Valid rates");
+
+    RangeCheck.checkIncludedInInteger(
+      this.rateScaling(),
+      "Rate scaling",
+      RangeInclusiveI.of(0, 7),
+      "Valid rate scaling values");
   }
 
   enum LevelScalingCurve
