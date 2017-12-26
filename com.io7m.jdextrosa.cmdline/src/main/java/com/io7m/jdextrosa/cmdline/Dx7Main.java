@@ -48,23 +48,20 @@ public final class Dx7Main implements Runnable
     this.args =
       Objects.requireNonNull(in_args, "Command line arguments");
 
-    final Dx7CommandRoot r = new Dx7CommandRoot();
-    final Dx7CommandParse cmd_parse = new Dx7CommandParse();
-    final Dx7CommandParseBatch cmd_parse_batch = new Dx7CommandParseBatch();
-    final Dx7CommandParseXML cmd_parse_xml = new Dx7CommandParseXML();
-    final Dx7CommandConvert cmd_convert = new Dx7CommandConvert();
+    final Dx7CommandRoot r =
+      new Dx7CommandRoot();
+    final Dx7CommandConvertBatch cmd_convert_batch =
+      new Dx7CommandConvertBatch();
+    final Dx7CommandConvert cmd_convert =
+      new Dx7CommandConvert();
 
     this.commands = new HashMap<>(8);
-    this.commands.put("parse", cmd_parse);
-    this.commands.put("parse-batch", cmd_parse_batch);
-    this.commands.put("parse-xml", cmd_parse_xml);
+    this.commands.put("convert-batch", cmd_convert_batch);
     this.commands.put("convert", cmd_convert);
 
     this.commander = new JCommander(r);
     this.commander.setProgramName("jdextrosa");
-    this.commander.addCommand("parse", cmd_parse);
-    this.commander.addCommand("parse-batch", cmd_parse_batch);
-    this.commander.addCommand("parse-xml", cmd_parse_xml);
+    this.commander.addCommand("convert-batch", cmd_convert_batch);
     this.commander.addCommand("convert", cmd_convert);
   }
 

@@ -66,10 +66,10 @@ import java.util.zip.GZIPOutputStream;
 @Parameters(
   commandNames = "parse-batch",
   commandDescription = "Parse each SysEx file specified in the given batch file")
-final class Dx7CommandParseBatch extends Dx7CommandRoot
+final class Dx7CommandConvertBatch extends Dx7CommandRoot
 {
   private static final Logger LOG =
-    LoggerFactory.getLogger(Dx7CommandParseBatch.class);
+    LoggerFactory.getLogger(Dx7CommandConvertBatch.class);
 
   private final Dx7XMLParsers xml_parsers;
   private final Dx7XMLWriters xml_writers;
@@ -107,7 +107,7 @@ final class Dx7CommandParseBatch extends Dx7CommandRoot
     .setOperator6(Dx7Operator.of(Dx7OperatorID.of(6)))
     .build();
 
-  Dx7CommandParseBatch()
+  Dx7CommandConvertBatch()
   {
     this.xml_parsers = new Dx7XMLParsers();
     this.xml_writers = new Dx7XMLWriters();
@@ -246,7 +246,7 @@ final class Dx7CommandParseBatch extends Dx7CommandRoot
         LOG.debug("picking 32 random patches");
 
         final Vector<Dx7VoiceNamed> voices_shuffled =
-          voices_all.filter(Dx7CommandParseBatch::shouldBeIncluded)
+          voices_all.filter(Dx7CommandConvertBatch::shouldBeIncluded)
             .shuffle();
         voices = voices_shuffled.take(Math.min(32, voices_shuffled.size()));
       } else {

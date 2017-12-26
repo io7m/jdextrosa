@@ -46,6 +46,16 @@ public enum Dx7Format
 
   private final String type;
 
+  /**
+   * Conver this value to a string.
+   */
+
+  @Override
+  public String toString()
+  {
+    return this.type;
+  }
+
   Dx7Format(
     final String in_type)
   {
