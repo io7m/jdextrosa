@@ -17,13 +17,15 @@
 package com.io7m.jdextrosa.io;
 
 import com.io7m.junreachable.UnreachableCodeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.Objects;
+
+/**
+ * Functions that provider readers and writers for binary SysEx messages.
+ */
 
 public final class Dx7SysExIO
 {
@@ -31,6 +33,16 @@ public final class Dx7SysExIO
   {
     throw new UnreachableCodeException();
   }
+
+  /**
+   * Create a reader for the given stream.
+   *
+   * @param errors An error receiver
+   * @param uri    The URI of the stream for diagnostic purposes
+   * @param stream An input stream
+   *
+   * @return A reader
+   */
 
   public static Dx7SysExReaderType createReader(
     final Dx7ParseErrorListenerType errors,
@@ -42,6 +54,15 @@ public final class Dx7SysExIO
     Objects.requireNonNull(stream, "Stream");
     return new Dx7Reader(errors, uri, new Dx7InputStream(stream));
   }
+
+  /**
+   * Create a writer for the given stream.
+   *
+   * @param uri    The URI of the stream for diagnostic purposes
+   * @param stream An output stream
+   *
+   * @return A writer
+   */
 
   public static Dx7SysExWriterType createWriter(
     final URI uri,

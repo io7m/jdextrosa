@@ -20,10 +20,19 @@ import com.io7m.jranges.RangeCheck;
 import com.io7m.jranges.RangeInclusiveI;
 import org.immutables.value.Value;
 
+/**
+ * The numeric identifier of an operator in a voice. The valid range
+ * of operators on a DX7 is {@code [1, 6]}.
+ */
+
 @DxImmutableStyleType
 @Value.Immutable
 public interface Dx7OperatorIDType extends Comparable<Dx7OperatorIDType>
 {
+  /**
+   * @return The raw integer ID
+   */
+
   @Value.Parameter
   int id();
 
@@ -33,6 +42,10 @@ public interface Dx7OperatorIDType extends Comparable<Dx7OperatorIDType>
   {
     return Integer.compare(this.id(), o.id());
   }
+
+  /**
+   * Check preconditions for the type.
+   */
 
   @Value.Check
   default void checkPreconditions()

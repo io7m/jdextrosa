@@ -20,12 +20,24 @@ import org.immutables.value.Value;
 
 import java.net.URI;
 
+/**
+ * Metadata about a voice.
+ */
+
 @DxImmutableStyleType
 @Value.Immutable
 public interface Dx7VoiceMetadataType
 {
+  /**
+   * @return The URI of the resource containing the original voice definition
+   */
+
   @Value.Parameter
   URI source();
+
+  /**
+   * @return The unique URI of the voice
+   */
 
   @Value.Parameter
   URI id();

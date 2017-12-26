@@ -32,7 +32,6 @@ import com.io7m.jdextrosa.io.xml.spi.Dx7XMLParseError;
 import com.io7m.jdextrosa.io.xml.spi.Dx7XMLParserRequest;
 import com.io7m.jdextrosa.io.xml.spi.Dx7XMLWriterRequest;
 import com.io7m.jdextrosa.io.xml.spi.Dx7XMLWriterType;
-import com.io7m.junreachable.UnimplementedCodeException;
 import com.io7m.junreachable.UnreachableCodeException;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Vector;
@@ -193,7 +192,9 @@ final class Dx7CommandConvert extends Dx7CommandRoot
     throws IOException
   {
     try (OutputStream stream = Files.newOutputStream(file)) {
-      try (Dx7SysExWriterType writer = Dx7SysExIO.createWriter(file.toUri(), stream)) {
+      try (Dx7SysExWriterType writer = Dx7SysExIO.createWriter(
+        file.toUri(),
+        stream)) {
         writer.write(voices);
       }
     }

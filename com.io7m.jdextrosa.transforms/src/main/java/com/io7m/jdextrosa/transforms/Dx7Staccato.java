@@ -38,33 +38,39 @@ public final class Dx7Staccato
   private final SortedSet<Dx7OperatorID> modulators;
 
   private Dx7Staccato(
-    final Dx7Voice voice,
-    final Dx7StaccatoParameters parameters)
+    final Dx7Voice in_voice,
+    final Dx7StaccatoParameters in_parameters)
   {
     this.voice =
-      Objects.requireNonNull(voice, "Voice");
+      Objects.requireNonNull(in_voice, "Voice");
     this.parameters =
-      Objects.requireNonNull(parameters, "Parameters");
+      Objects.requireNonNull(in_parameters, "Parameters");
     this.carriers =
-      Dx7AlgorithmOperators.carriers(voice.algorithm());
+      Dx7AlgorithmOperators.carriers(in_voice.algorithm());
     this.modulators =
-      Dx7AlgorithmOperators.modulators(voice.algorithm());
+      Dx7AlgorithmOperators.modulators(in_voice.algorithm());
   }
+
+  /**
+   * Apply the staccato function.
+   *
+   * @return A modified voice
+   */
 
   public Dx7Voice apply()
   {
     final Dx7Operator op1 =
-      this.staccatoOp(this.voice.operator1(), this.parameters);
+      this.staccatoOp(this.voice.operator1());
     final Dx7Operator op2 =
-      this.staccatoOp(this.voice.operator2(), this.parameters);
+      this.staccatoOp(this.voice.operator2());
     final Dx7Operator op3 =
-      this.staccatoOp(this.voice.operator3(), this.parameters);
+      this.staccatoOp(this.voice.operator3());
     final Dx7Operator op4 =
-      this.staccatoOp(this.voice.operator4(), this.parameters);
+      this.staccatoOp(this.voice.operator4());
     final Dx7Operator op5 =
-      this.staccatoOp(this.voice.operator5(), this.parameters);
+      this.staccatoOp(this.voice.operator5());
     final Dx7Operator op6 =
-      this.staccatoOp(this.voice.operator6(), this.parameters);
+      this.staccatoOp(this.voice.operator6());
 
     return Dx7Voice.builder()
       .from(this.voice)
@@ -78,10 +84,9 @@ public final class Dx7Staccato
   }
 
   private Dx7Operator staccatoOp(
-    final Dx7Operator op,
-    final Dx7StaccatoParameters parameters)
+    final Dx7Operator op)
   {
-    switch (parameters.affect()) {
+    switch (this.parameters.affect()) {
       case AFFECT_CARRIERS: {
         if (this.isCarrier(op)) {
           return this.staccatoOpActual(op);

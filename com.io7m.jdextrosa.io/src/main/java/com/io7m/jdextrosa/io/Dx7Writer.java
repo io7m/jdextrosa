@@ -47,6 +47,13 @@ final class Dx7Writer implements Dx7SysExWriterType
     this.stream = Objects.requireNonNull(in_stream, "Stream");
   }
 
+  private static int packLevelCurves(
+    final LevelScalingCurve left,
+    final LevelScalingCurve right)
+  {
+    return (left.external() << 2) | (right.external() & 0b11);
+  }
+
   @Override
   public void write(
     final Vector<Dx7VoiceNamed> voices)
@@ -171,13 +178,6 @@ final class Dx7Writer implements Dx7SysExWriterType
     buffer[position + 14] = (byte) (op.outputLevel());
     buffer[position + 15] = (byte) (op.oscillatorFrequencyCoarsePacked() | op.oscillatorMode().external());
     buffer[position + 16] = (byte) (op.oscillatorFrequencyFine());
-  }
-
-  private static int packLevelCurves(
-    final LevelScalingCurve left,
-    final LevelScalingCurve right)
-  {
-    return (left.external() << 2) | (right.external() & 0b11);
   }
 
   @Override

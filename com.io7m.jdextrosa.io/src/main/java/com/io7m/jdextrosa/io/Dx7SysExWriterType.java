@@ -22,8 +22,20 @@ import io.vavr.collection.Vector;
 import java.io.Closeable;
 import java.io.IOException;
 
+/**
+ * A writer for binary SysEx messages.
+ */
+
 public interface Dx7SysExWriterType extends Closeable
 {
+  /**
+   * Write all of the voices to a SysEx message.
+   *
+   * @param voices The voices
+   *
+   * @throws IOException On I/O errors
+   */
+
   void write(Vector<Dx7VoiceNamed> voices)
     throws IOException;
 }

@@ -20,10 +20,19 @@ import com.io7m.jranges.RangeCheck;
 import com.io7m.jranges.RangeInclusiveI;
 import org.immutables.value.Value;
 
+/**
+ * The numeric identifier of the algorithm used for a voice. The valid range
+ * of algorithms on a DX7 is {@code [1, 32]}.
+ */
+
 @DxImmutableStyleType
 @Value.Immutable
 public interface Dx7AlgorithmIDType extends Comparable<Dx7AlgorithmIDType>
 {
+  /**
+   * @return The raw integer ID
+   */
+
   @Value.Parameter
   int id();
 
@@ -34,10 +43,18 @@ public interface Dx7AlgorithmIDType extends Comparable<Dx7AlgorithmIDType>
     return Integer.compare(this.id(), o.id());
   }
 
+  /**
+   * @return The algorithm index as it would appear in a packed SysEx structure
+   */
+
   default int external()
   {
     return this.id() - 1;
   }
+
+  /**
+   * Check preconditions for the type.
+   */
 
   @Value.Check
   default void checkPreconditions()

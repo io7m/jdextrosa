@@ -20,21 +20,53 @@ import com.io7m.jranges.RangeCheck;
 import com.io7m.jranges.RangeInclusiveI;
 import org.immutables.value.Value;
 
+/**
+ * A DX7 voice.
+ */
+
 @DxImmutableStyleType
 @Value.Immutable
 public interface Dx7VoiceType
 {
+  /**
+   * @return Operator 1
+   */
+
   Dx7Operator operator1();
+
+  /**
+   * @return Operator 2
+   */
 
   Dx7Operator operator2();
 
+  /**
+   * @return Operator 3
+   */
+
   Dx7Operator operator3();
+
+  /**
+   * @return Operator 4
+   */
 
   Dx7Operator operator4();
 
+  /**
+   * @return Operator 5
+   */
+
   Dx7Operator operator5();
 
+  /**
+   * @return Operator 6
+   */
+
   Dx7Operator operator6();
+
+  /**
+   * @return The algorithm used for the voice
+   */
 
   @Value.Default
   default Dx7AlgorithmID algorithm()
@@ -42,10 +74,9 @@ public interface Dx7VoiceType
     return Dx7AlgorithmID.of(1);
   }
 
-  default int algorithmExternal()
-  {
-    return this.algorithm().id() - 1;
-  }
+  /**
+   * @return The feedback used for the voice
+   */
 
   @Value.Default
   default int feedback()
@@ -53,16 +84,30 @@ public interface Dx7VoiceType
     return 0;
   }
 
+  /**
+   * @return The transposition value for the voice
+   */
+
   @Value.Default
   default int transpose()
   {
     return 0;
   }
 
+  /**
+   * @return The transposition value for the voice as it appears in SysEx
+   * messages
+   */
+
+  @Value.Derived
   default int transposeExternal()
   {
     return this.transpose() + 24;
   }
+
+  /**
+   * @return The R1 rate for the pitch envelope
+   */
 
   @Value.Default
   default int pitchEnvelopeR1Rate()
@@ -70,11 +115,19 @@ public interface Dx7VoiceType
     return 99;
   }
 
+  /**
+   * @return The R2 rate for the pitch envelope
+   */
+
   @Value.Default
   default int pitchEnvelopeR2Rate()
   {
     return 99;
   }
+
+  /**
+   * @return The R3 rate for the pitch envelope
+   */
 
   @Value.Default
   default int pitchEnvelopeR3Rate()
@@ -82,11 +135,19 @@ public interface Dx7VoiceType
     return 99;
   }
 
+  /**
+   * @return The R4 rate for the pitch envelope
+   */
+
   @Value.Default
   default int pitchEnvelopeR4Rate()
   {
     return 99;
   }
+
+  /**
+   * @return The R1 level for the pitch envelope
+   */
 
   @Value.Default
   default int pitchEnvelopeR1Level()
@@ -94,11 +155,19 @@ public interface Dx7VoiceType
     return 50;
   }
 
+  /**
+   * @return The R2 level for the pitch envelope
+   */
+
   @Value.Default
   default int pitchEnvelopeR2Level()
   {
     return 50;
   }
+
+  /**
+   * @return The R3 level for the pitch envelope
+   */
 
   @Value.Default
   default int pitchEnvelopeR3Level()
@@ -106,11 +175,19 @@ public interface Dx7VoiceType
     return 50;
   }
 
+  /**
+   * @return The R4 level for the pitch envelope
+   */
+
   @Value.Default
   default int pitchEnvelopeR4Level()
   {
     return 50;
   }
+
+  /**
+   * @return The LFO pitch modulation depth
+   */
 
   @Value.Default
   default int lfoPitchModulationDepth()
@@ -118,16 +195,30 @@ public interface Dx7VoiceType
     return 0;
   }
 
+  /**
+   * @return The LFO pitch modulation sensitivity
+   */
+
   @Value.Default
   default int lfoPitchModulationSensitivity()
   {
     return 0;
   }
 
+  /**
+   * @return The LFO pitch modulation sensitivity as it appears in SysEx
+   * messages
+   */
+
+  @Value.Derived
   default int lfoPitchModulationSensitivityPacked()
   {
     return this.lfoPitchModulationSensitivity() << 4;
   }
+
+  /**
+   * @return The amount by which the LFO affects oscillator amplitude
+   */
 
   @Value.Default
   default int lfoAmplitudeModulationDepth()
@@ -135,11 +226,19 @@ public interface Dx7VoiceType
     return 0;
   }
 
+  /**
+   * @return The speed of the LFO
+   */
+
   @Value.Default
   default int lfoSpeed()
   {
     return 0;
   }
+
+  /**
+   * @return The delay before the LFO begins modulating
+   */
 
   @Value.Default
   default int lfoDelay()
@@ -147,11 +246,19 @@ public interface Dx7VoiceType
     return 0;
   }
 
+  /**
+   * @return The LFO waveform
+   */
+
   @Value.Default
   default LFOWave lfoWave()
   {
     return LFOWave.LFO_TRIANGLE;
   }
+
+  /**
+   * @return {@code true} iff the LFO should be restarted with each key press
+   */
 
   @Value.Default
   default boolean lfoKeySync()
@@ -159,11 +266,20 @@ public interface Dx7VoiceType
     return true;
   }
 
+  /**
+   * @return {@code true} iff the oscillators should be restarted with each key
+   * press
+   */
+
   @Value.Default
   default boolean oscillatorKeySync()
   {
     return true;
   }
+
+  /**
+   * Check preconditions for the type.
+   */
 
   @Value.Check
   default void checkPreconditions()
@@ -259,13 +375,46 @@ public interface Dx7VoiceType
       "Valid LFO delay values");
   }
 
+  /**
+   * An LFO waveform.
+   */
+
   enum LFOWave
   {
+    /**
+     * A triangle waveform.
+     */
+
     LFO_TRIANGLE(0),
+
+    /**
+     * A downward saw waveform.
+     */
+
     LFO_SAW_DOWN(1),
+
+    /**
+     * An upward saw waveform.
+     */
+
     LFO_SAW_UP(2),
+
+    /**
+     * A square waveform.
+     */
+
     LFO_SQUARE(3),
+
+    /**
+     * A sine waveform.
+     */
+
     LFO_SINE(4),
+
+    /**
+     * A random sample and hold waveform.
+     */
+
     LFO_SAMPLE_HOLD(5);
 
     private final int mode;
@@ -275,6 +424,12 @@ public interface Dx7VoiceType
     {
       this.mode = m;
     }
+
+    /**
+     * @param value The raw waveform value
+     *
+     * @return An LFO waveform for the given integer
+     */
 
     public static LFOWave ofInteger(
       final int value)
@@ -298,11 +453,23 @@ public interface Dx7VoiceType
       }
     }
 
+    /**
+     * @return The external integer value for the waveform
+     */
+
     public int external()
     {
       return this.mode;
     }
 
-    public int packed() { return this.external() << 1; }
+    /**
+     * @return The packed integer value for the waveform as it would appear in
+     * SysEx messages
+     */
+
+    public int packed()
+    {
+      return this.external() << 1;
+    }
   }
 }

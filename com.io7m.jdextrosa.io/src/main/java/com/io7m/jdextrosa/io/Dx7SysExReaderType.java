@@ -19,12 +19,28 @@ package com.io7m.jdextrosa.io;
 import com.io7m.jdextrosa.core.Dx7VoiceNamed;
 import io.vavr.collection.Vector;
 
+/**
+ * A reader for binary SysEx messages.
+ */
+
 public interface Dx7SysExReaderType
 {
+  /**
+   * @return All voices in the message
+   */
+
   default Vector<Dx7VoiceNamed> parse()
   {
     return this.parseAtMost(Integer.MAX_VALUE);
   }
+
+  /**
+   * Parse at most {@code limit} voices from the message.
+   *
+   * @param limit The maximum number of voices to parse
+   *
+   * @return All voices in the message
+   */
 
   Vector<Dx7VoiceNamed> parseAtMost(int limit);
 }

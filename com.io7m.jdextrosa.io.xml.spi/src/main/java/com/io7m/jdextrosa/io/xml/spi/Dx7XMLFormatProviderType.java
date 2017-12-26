@@ -46,6 +46,17 @@ public interface Dx7XMLFormatProviderType
     Dx7XMLErrorLog in_errors,
     Locator2 in_locator);
 
+  /**
+   * Create a writer.
+   *
+   * @param file   The URI for diagnostic messages
+   * @param stream The output stream
+   *
+   * @return A writer
+   *
+   * @throws Exception On errors
+   */
+
   Dx7XMLWriterType createWriter(
     URI file,
     OutputStream stream)

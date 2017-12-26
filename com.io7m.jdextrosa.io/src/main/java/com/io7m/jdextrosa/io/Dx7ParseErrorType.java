@@ -65,6 +65,10 @@ public interface Dx7ParseErrorType
   @Value.Parameter
   Optional<Exception> exception();
 
+  /**
+   * @return A human-readable form of the error
+   */
+
   default String show()
   {
     final StringBuilder sb = new StringBuilder(128);

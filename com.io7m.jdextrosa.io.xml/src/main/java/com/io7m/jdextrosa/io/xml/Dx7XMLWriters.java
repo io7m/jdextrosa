@@ -25,9 +25,17 @@ import io.vavr.collection.Vector;
 import java.util.Objects;
 import java.util.ServiceLoader;
 
+/**
+ * Functions to instantiate XML writers.
+ */
+
 public final class Dx7XMLWriters
 {
   private final Vector<Dx7XMLFormatProviderType> formats;
+
+  /**
+   * Instantiate a writer provider.
+   */
 
   public Dx7XMLWriters()
   {
@@ -36,6 +44,16 @@ public final class Dx7XMLWriters
         .map(ServiceLoader.Provider::get)
         .toVector();
   }
+
+  /**
+   * Create a writer.
+   *
+   * @param request The writer request
+   *
+   * @return A writer
+   *
+   * @throws Dx7WriterConfigurationException On writer configuration errors
+   */
 
   public Dx7XMLWriterType createWriter(
     final Dx7XMLWriterRequest request)

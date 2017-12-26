@@ -57,6 +57,10 @@ public interface Dx7XMLParseErrorType extends LexicalType<URI>
   @Value.Parameter
   Optional<Exception> exception();
 
+  /**
+   * @return A humanly-readable form of the error
+   */
+
   default String show()
   {
     final StringBuilder sb = new StringBuilder(128);

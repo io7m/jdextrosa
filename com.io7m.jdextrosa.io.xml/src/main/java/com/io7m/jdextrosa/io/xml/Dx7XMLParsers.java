@@ -80,6 +80,17 @@ public final class Dx7XMLParsers
         .toVector();
   }
 
+  /**
+   * Create a parser.
+   *
+   * @param r The parser request
+   *
+   * @return A parser
+   *
+   * @throws IOException                     On I/O errors
+   * @throws Dx7ParserConfigurationException On parser configuration errors
+   */
+
   public Dx7XMLParserType create(
     final Dx7XMLParserRequest r)
     throws IOException, Dx7ParserConfigurationException

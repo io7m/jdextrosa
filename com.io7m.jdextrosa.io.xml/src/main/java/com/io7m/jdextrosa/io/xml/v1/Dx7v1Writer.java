@@ -39,7 +39,7 @@ import java.util.Objects;
 
 import static com.io7m.jdextrosa.io.xml.v1.Dx7XMLv1FormatProvider.SCHEMA_NAMESPACE;
 
-public final class Dx7v1Writer implements Dx7XMLWriterType
+final class Dx7v1Writer implements Dx7XMLWriterType
 {
   private final URI file;
   private final OutputStream stream;

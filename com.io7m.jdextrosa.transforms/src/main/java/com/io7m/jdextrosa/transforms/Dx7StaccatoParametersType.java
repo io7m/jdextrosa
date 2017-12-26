@@ -19,23 +19,57 @@ package com.io7m.jdextrosa.transforms;
 import com.io7m.jdextrosa.core.DxImmutableStyleType;
 import org.immutables.value.Value;
 
+/**
+ * A set of staccato function parameters.
+ */
+
 @DxImmutableStyleType
 @Value.Immutable
 public interface Dx7StaccatoParametersType
 {
+  /**
+   * @return The operators that will be affected
+   */
+
   @Value.Parameter
   AffectOperators affect();
+
+  /**
+   * @return {@code true} iff the attack of the operators will be affected
+   */
 
   @Value.Parameter
   boolean modifyAttack();
 
+  /**
+   * @return {@code true} iff the release of the operators will be affected
+   */
+
   @Value.Parameter
   boolean modifyRelease();
 
+  /**
+   * An enum specifying which operators will be affected.
+   */
+
   enum AffectOperators
   {
+    /**
+     * Only operators that are carriers will be affected.
+     */
+
     AFFECT_CARRIERS,
+
+    /**
+     * Only operators that are modulators will be affected.
+     */
+
     AFFECT_MODULATORS,
+
+    /**
+     * All operators will be affected.
+     */
+
     AFFECT_ALL
   }
 }

@@ -23,18 +23,38 @@ import org.immutables.value.Value;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
+/**
+ * A named voice.
+ */
+
 @DxImmutableStyleType
 @Value.Immutable
 public interface Dx7VoiceNamedType
 {
+  /**
+   * @return The name of the voice
+   */
+
   @Value.Parameter
   String name();
+
+  /**
+   * @return The voice parameters
+   */
 
   @Value.Parameter
   Dx7Voice voice();
 
+  /**
+   * @return Optional metadata for the voice
+   */
+
   @Value.Parameter
   Optional<Dx7VoiceMetadata> metadata();
+
+  /**
+   * Check preconditions for the type.
+   */
 
   @Value.Check
   default void checkPreconditions()
