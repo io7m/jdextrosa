@@ -16,7 +16,7 @@
 
 package com.io7m.jdextrosa.io.xml.spi;
 
-import com.io7m.jdextrosa.core.DxImmutableStyleType;
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
 
 import java.io.OutputStream;
@@ -26,7 +26,7 @@ import java.net.URI;
  * A request to write a file.
  */
 
-@DxImmutableStyleType
+@ImmutablesStyleType
 @Value.Immutable
 public interface Dx7XMLWriterRequestType
 {

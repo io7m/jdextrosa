@@ -16,7 +16,7 @@
 
 package com.io7m.jdextrosa.io.xml.spi;
 
-import com.io7m.jdextrosa.core.DxImmutableStyleType;
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import com.io7m.jlexing.core.LexicalPosition;
 import com.io7m.jlexing.core.LexicalType;
 import org.immutables.value.Value;
@@ -28,7 +28,7 @@ import java.util.Optional;
  * The type of parse errors.
  */
 
-@DxImmutableStyleType
+@ImmutablesStyleType
 @Value.Immutable
 public interface Dx7XMLParseErrorType extends LexicalType<URI>
 {

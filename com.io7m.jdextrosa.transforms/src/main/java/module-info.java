@@ -21,7 +21,7 @@
 module com.io7m.jdextrosa.transforms
 {
   requires static org.immutables.value;
-  requires static vavr.encodings;
+  requires static com.io7m.immutables.style;
 
   requires com.io7m.jdextrosa.core;
   requires io.vavr;

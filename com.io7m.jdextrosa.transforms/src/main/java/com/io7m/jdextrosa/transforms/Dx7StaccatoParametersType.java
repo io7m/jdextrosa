@@ -16,14 +16,14 @@
 
 package com.io7m.jdextrosa.transforms;
 
-import com.io7m.jdextrosa.core.DxImmutableStyleType;
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
 
 /**
  * A set of staccato function parameters.
  */
 
-@DxImmutableStyleType
+@ImmutablesStyleType
 @Value.Immutable
 public interface Dx7StaccatoParametersType
 {

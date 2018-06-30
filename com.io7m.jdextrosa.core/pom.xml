@@ -13,7 +13,7 @@
   </parent>
 
   <artifactId>com.io7m.jdextrosa.core</artifactId>
-  <packaging>bundle</packaging>
+  <packaging>jar</packaging>
 
   <name>com.io7m.jdextrosa.core</name>
   <description>DX7 Librarian (Core)</description>
@@ -24,6 +24,14 @@
       <groupId>com.io7m.jranges</groupId>
       <artifactId>com.io7m.jranges.core</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.io7m.junreachable</groupId>
+      <artifactId>com.io7m.junreachable.core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.vavr</groupId>
+      <artifactId>vavr</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.immutables</groupId>
@@ -31,8 +39,8 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.immutables.vavr</groupId>
-      <artifactId>vavr-encodings</artifactId>
+      <groupId>com.io7m.immutables.style</groupId>
+      <artifactId>com.io7m.immutables.style</artifactId>
       <scope>provided</scope>
     </dependency>
   </dependencies>
@@ -45,17 +53,14 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
       </plugin>
 
-      <!-- Produce OSGi bundle -->
+      <!-- Produce OSGi manifest -->
       <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
+        <groupId>biz.aQute.bnd</groupId>
+        <artifactId>bnd-maven-plugin</artifactId>
         <configuration>
-          <instructions>
-            <Export-Package>
-              com.io7m.jdextrosa.core
-            </Export-Package>
-          </instructions>
+          <bnd><![CDATA[
+            Export-Package: com.io7m.jdextrosa.core
+]]></bnd>
         </configuration>
       </plugin>
     </plugins>

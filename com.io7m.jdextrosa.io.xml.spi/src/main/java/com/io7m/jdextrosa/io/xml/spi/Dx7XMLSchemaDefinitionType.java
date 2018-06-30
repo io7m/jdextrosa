@@ -16,7 +16,7 @@
 
 package com.io7m.jdextrosa.io.xml.spi;
 
-import com.io7m.jdextrosa.core.DxImmutableStyleType;
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
 
 import java.net.URI;
@@ -26,7 +26,7 @@ import java.net.URL;
  * The type of schema definitions.
  */
 
-@DxImmutableStyleType
+@ImmutablesStyleType
 @Value.Immutable
 public interface Dx7XMLSchemaDefinitionType
 {

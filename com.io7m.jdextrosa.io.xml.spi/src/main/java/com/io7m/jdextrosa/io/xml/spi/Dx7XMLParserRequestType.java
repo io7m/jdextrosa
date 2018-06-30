@@ -16,7 +16,7 @@
 
 package com.io7m.jdextrosa.io.xml.spi;
 
-import com.io7m.jdextrosa.core.DxImmutableStyleType;
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
 
 import java.io.InputStream;
@@ -27,7 +27,7 @@ import java.nio.file.Path;
  * A request to parse a file.
  */
 
-@DxImmutableStyleType
+@ImmutablesStyleType
 @Value.Immutable
 public interface Dx7XMLParserRequestType
 {

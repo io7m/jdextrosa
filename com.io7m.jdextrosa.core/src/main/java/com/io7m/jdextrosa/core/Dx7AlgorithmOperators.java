@@ -41,6 +41,7 @@ public final class Dx7AlgorithmOperators
    * @return The carriers
    */
 
+  // CHECKSTYLE:OFF
   public static SortedSet<Dx7OperatorID> carriers(
     final Dx7AlgorithmID algorithm)
   {
@@ -184,6 +185,7 @@ public final class Dx7AlgorithmOperators
       }
     }
   }
+  // CHECKSTYLE:ON
 
   /**
    * Return the set of operators that are modulators for the given algorithm.

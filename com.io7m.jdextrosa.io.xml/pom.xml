@@ -13,7 +13,7 @@
   </parent>
 
   <artifactId>com.io7m.jdextrosa.io.xml</artifactId>
-  <packaging>bundle</packaging>
+  <packaging>jar</packaging>
 
   <name>com.io7m.jdextrosa.io.xml</name>
   <description>DX7 Librarian (XML I/O)</description>
@@ -58,8 +58,8 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.immutables.vavr</groupId>
-      <artifactId>vavr-encodings</artifactId>
+      <groupId>com.io7m.immutables.style</groupId>
+      <artifactId>com.io7m.immutables.style</artifactId>
       <scope>provided</scope>
     </dependency>
   </dependencies>
@@ -72,17 +72,14 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
       </plugin>
 
-      <!-- Produce OSGi bundle -->
+      <!-- Produce OSGi manifest -->
       <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <extensions>true</extensions>
+        <groupId>biz.aQute.bnd</groupId>
+        <artifactId>bnd-maven-plugin</artifactId>
         <configuration>
-          <instructions>
-            <Export-Package>
-              com.io7m.jdextrosa.io.xml
-            </Export-Package>
-          </instructions>
+          <bnd><![CDATA[
+            Export-Package: com.io7m.jdextrosa.io.xml
+]]></bnd>
         </configuration>
       </plugin>
     </plugins>

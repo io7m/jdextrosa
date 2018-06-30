@@ -16,7 +16,7 @@
 
 package com.io7m.jdextrosa.io;
 
-import com.io7m.jdextrosa.core.DxImmutableStyleType;
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
 
 import java.net.URI;
@@ -26,7 +26,7 @@ import java.util.Optional;
  * The type of parse errors.
  */
 
-@DxImmutableStyleType
+@ImmutablesStyleType
 @Value.Immutable
 public interface Dx7ParseErrorType
 {

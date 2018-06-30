@@ -16,11 +16,10 @@
 
 package com.io7m.jdextrosa.io.xml;
 
-import com.io7m.jdextrosa.core.DxImmutableStyleType;
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import com.io7m.jdextrosa.io.xml.spi.Dx7XMLSchemaDefinition;
 import io.vavr.collection.Map;
 import org.immutables.value.Value;
-import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 import java.net.URI;
 
@@ -28,8 +27,7 @@ import java.net.URI;
  * A set of mappings from namespace URIs to schemas.
  */
 
-@DxImmutableStyleType
-@VavrEncodingEnabled
+@ImmutablesStyleType
 @Value.Immutable
 public interface Dx7XMLSchemaResolutionMappingsType
 {

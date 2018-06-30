@@ -28,8 +28,9 @@ module com.io7m.jdextrosa.cmdline
   requires com.io7m.mutable.numbers.core;
   requires io.vavr;
   requires jcommander;
-  requires logback.classic;
-  requires slf4j.api;
+  requires ch.qos.logback.classic;
+  requires ch.qos.logback.core;
+  requires org.slf4j;
 
   opens com.io7m.jdextrosa.cmdline to jcommander;
 }

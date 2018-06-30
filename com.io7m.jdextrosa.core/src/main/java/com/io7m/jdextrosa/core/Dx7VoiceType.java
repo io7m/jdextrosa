@@ -16,6 +16,7 @@
 
 package com.io7m.jdextrosa.core;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import com.io7m.jranges.RangeCheck;
 import com.io7m.jranges.RangeInclusiveI;
 import org.immutables.value.Value;
@@ -24,7 +25,7 @@ import org.immutables.value.Value;
  * A DX7 voice.
  */
 
-@DxImmutableStyleType
+@ImmutablesStyleType
 @Value.Immutable
 public interface Dx7VoiceType
 {

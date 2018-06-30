@@ -21,6 +21,7 @@
 module com.io7m.jdextrosa.core
 {
   requires static org.immutables.value;
+  requires static com.io7m.immutables.style;
 
   requires com.io7m.jranges.core;
   requires com.io7m.junreachable.core;

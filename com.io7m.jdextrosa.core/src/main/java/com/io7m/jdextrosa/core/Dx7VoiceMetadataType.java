@@ -16,6 +16,7 @@
 
 package com.io7m.jdextrosa.core;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import org.immutables.value.Value;
 
 import java.net.URI;
@@ -24,7 +25,7 @@ import java.net.URI;
  * Metadata about a voice.
  */
 
-@DxImmutableStyleType
+@ImmutablesStyleType
 @Value.Immutable
 public interface Dx7VoiceMetadataType
 {

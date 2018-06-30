@@ -16,6 +16,7 @@
 
 package com.io7m.jdextrosa.core;
 
+import com.io7m.immutables.styles.ImmutablesStyleType;
 import com.io7m.jranges.RangeCheck;
 import com.io7m.jranges.RangeInclusiveI;
 import org.immutables.value.Value;
@@ -25,7 +26,7 @@ import org.immutables.value.Value;
  * of operators on a DX7 is {@code [1, 6]}.
  */
 
-@DxImmutableStyleType
+@ImmutablesStyleType
 @Value.Immutable
 public interface Dx7OperatorIDType extends Comparable<Dx7OperatorIDType>
 {
