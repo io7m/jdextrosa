@@ -20,8 +20,8 @@ import com.io7m.jdextrosa.io.xml.spi.Dx7XMLContentHandlerType;
 import com.io7m.jdextrosa.io.xml.spi.Dx7XMLErrorLog;
 import com.io7m.jdextrosa.io.xml.spi.Dx7XMLFormatProviderType;
 import com.io7m.jdextrosa.io.xml.spi.Dx7XMLParserRequest;
-import com.io7m.jdextrosa.io.xml.spi.Dx7XMLSchemaDefinition;
 import com.io7m.jdextrosa.io.xml.spi.Dx7XMLWriterType;
+import com.io7m.jxe.core.JXESchemaDefinition;
 import net.sf.saxon.Configuration;
 import org.xml.sax.ext.Locator2;
 
@@ -38,8 +38,8 @@ public final class Dx7XMLv1FormatProvider implements Dx7XMLFormatProviderType
 
   static final URI SCHEMA_NAMESPACE_URI = URI.create(SCHEMA_NAMESPACE);
 
-  private static final Dx7XMLSchemaDefinition SCHEMA =
-    Dx7XMLSchemaDefinition.builder()
+  private static final JXESchemaDefinition SCHEMA =
+    JXESchemaDefinition.builder()
       .setFileIdentifier("file::jdextrosa-1.0.xsd")
       .setNamespace(SCHEMA_NAMESPACE_URI)
       .setLocation(Dx7XMLv1FormatProvider.class.getResource(
@@ -68,7 +68,7 @@ public final class Dx7XMLv1FormatProvider implements Dx7XMLFormatProviderType
   }
 
   @Override
-  public Dx7XMLSchemaDefinition schema()
+  public JXESchemaDefinition schema()
   {
     return SCHEMA;
   }

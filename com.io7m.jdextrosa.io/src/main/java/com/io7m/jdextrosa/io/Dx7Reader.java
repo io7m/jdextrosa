@@ -177,7 +177,6 @@ final class Dx7Reader implements Dx7SysExReaderType
   }
 
   private Vector<Dx7VoiceNamed> parseOneVoice()
-    throws IOException
   {
     LOG.debug("parsing 1 voice");
     return Vector.empty();
@@ -274,6 +273,144 @@ final class Dx7Reader implements Dx7SysExReaderType
       final Dx7Operator.Builder op_b = Dx7Operator.builder();
       op_b.setId(Dx7OperatorID.of(this.op_index));
 
+      this.parseAmpEnvelope(op_b);
+      this.parseLevelScalingAndCurves(op_b);
+
+      final int detune_packed = this.stream.readByte();
+      final int detune_raw = (detune_packed & 0b01111000) >> 3;
+
+      final int detune =
+        this.checkConstrainValueRange(
+          detune_raw - 7,
+          "Oscillator detune",
+          -7,
+          7);
+
+      final int rate_scaling =
+        this.checkConstrainValueRange(
+          detune_packed & 0b111,
+          "Rate scaling",
+          0,
+          7);
+
+      final int sensitivity_packed = this.stream.readByte();
+
+      final int vel_sensitivity =
+        this.checkConstrainValueRange(
+          sensitivity_packed >> 2,
+          "Velocity sensitivity",
+          0,
+          7);
+
+      final int amp_mod_sensitivity =
+        this.checkConstrainValueRange(
+          sensitivity_packed & 0b11,
+          "Amplitude mod sensitivity",
+          0,
+          3);
+
+      checkStreamPosition(this.stream, this.offset_start, 14L);
+
+      final int output_level =
+        this.checkConstrainValueRange(
+          this.stream.readByte(),
+          "Output Level",
+          0,
+          99);
+
+      final int osc_pack =
+        this.stream.readByte();
+
+      final int freq_coarse =
+        this.checkConstrainValueRange(
+          osc_pack >> 1,
+          "Oscillator frequency coarse",
+          0,
+          31);
+
+      final int osc_mode =
+        this.checkConstrainValueRange(
+          osc_pack & 0x1,
+          "Oscillator mode",
+          0,
+          1);
+
+      final int osc_frequency_fine =
+        this.checkConstrainValueRange(
+          this.stream.readByte(),
+          "Oscillator frequency fine",
+          0,
+          99);
+
+      op_b.setRateScaling(rate_scaling);
+      op_b.setOscillatorFrequencyDetune(detune);
+      op_b.setVelocitySensitivity(vel_sensitivity);
+      op_b.setLfoAmplitudeModulationSensitivity(amp_mod_sensitivity);
+      op_b.setOutputLevel(output_level);
+      op_b.setOscillatorFrequencyCoarse(freq_coarse);
+      op_b.setOscillatorMode(Dx7OperatorType.OscillatorMode.ofInteger(osc_mode));
+      op_b.setOscillatorFrequencyFine(osc_frequency_fine);
+
+      checkStreamPosition(this.stream, this.offset_start, 17L);
+      return Optional.of(op_b.build());
+    }
+
+    private void parseLevelScalingAndCurves(
+      final Dx7Operator.Builder op_b)
+      throws IOException
+    {
+      final int level_scaling_breakpoint =
+        this.checkConstrainValueRange(
+          this.stream.readByte(),
+          "Level scaling breakpoint",
+          0,
+          99);
+
+      final int level_scaling_left_depth =
+        this.checkConstrainValueRange(
+          this.stream.readByte(),
+          "Level scaling left depth",
+          0,
+          99);
+
+      final int level_scaling_right_depth =
+        this.checkConstrainValueRange(
+          this.stream.readByte(),
+          "Level scaling right depth",
+          0,
+          99);
+
+      final int scaling_curves_packed = this.stream.readByte();
+
+      final int left_curve_value =
+        this.checkConstrainValueRange(
+          (scaling_curves_packed >> 2) & 0b11,
+          "Level scaling left curve",
+          0,
+          3);
+      final int right_curve_value =
+        this.checkConstrainValueRange(
+          scaling_curves_packed & 0b11,
+          "Level scaling right curve",
+          0,
+          3);
+
+      final Dx7OperatorType.LevelScalingCurve left_curve =
+        Dx7OperatorType.LevelScalingCurve.ofInteger(left_curve_value);
+      final Dx7OperatorType.LevelScalingCurve right_curve =
+        Dx7OperatorType.LevelScalingCurve.ofInteger(right_curve_value);
+
+      op_b.setLevelScalingBreakpoint(level_scaling_breakpoint);
+      op_b.setLevelScalingLeftDepth(level_scaling_left_depth);
+      op_b.setLevelScalingRightDepth(level_scaling_right_depth);
+      op_b.setLevelScalingLeftCurve(left_curve);
+      op_b.setLevelScalingRightCurve(right_curve);
+    }
+
+    private void parseAmpEnvelope(
+      final Dx7Operator.Builder op_b)
+      throws IOException
+    {
       final int env_r1_rate =
         this.checkConstrainValueRange(
           this.stream.readByte(),
@@ -330,115 +467,6 @@ final class Dx7Reader implements Dx7SysExReaderType
           0,
           99);
 
-      final int level_scaling_breakpoint =
-        this.checkConstrainValueRange(
-          this.stream.readByte(),
-          "Level scaling breakpoint",
-          0,
-          99);
-
-      final int level_scaling_left_depth =
-        this.checkConstrainValueRange(
-          this.stream.readByte(),
-          "Level scaling left depth",
-          0,
-          99);
-
-      final int level_scaling_right_depth =
-        this.checkConstrainValueRange(
-          this.stream.readByte(),
-          "Level scaling right depth",
-          0,
-          99);
-
-      final int scaling_curves_packed = this.stream.readByte();
-
-      final int left_curve_value =
-        this.checkConstrainValueRange(
-          (scaling_curves_packed >> 2) & 0b11,
-          "Level scaling left curve",
-          0,
-          3);
-      final int right_curve_value =
-        this.checkConstrainValueRange(
-          scaling_curves_packed & 0b11,
-          "Level scaling right curve",
-          0,
-          3);
-
-      final Dx7OperatorType.LevelScalingCurve left_curve =
-        Dx7OperatorType.LevelScalingCurve.ofInteger(left_curve_value);
-      final Dx7OperatorType.LevelScalingCurve right_curve =
-        Dx7OperatorType.LevelScalingCurve.ofInteger(right_curve_value);
-
-      final int detune_packed = this.stream.readByte();
-      final int detune_raw =
-        (detune_packed & 0b01111000) >> 3;
-      final int detune =
-        this.checkConstrainValueRange(
-          detune_raw - 7,
-          "Oscillator detune",
-          -7,
-          7);
-      final int rate_scaling =
-        this.checkConstrainValueRange(
-          detune_packed & 0b111,
-          "Rate scaling",
-          0,
-          7);
-
-      final int sensitivity_packed = this.stream.readByte();
-
-      final int vel_sensitivity =
-        this.checkConstrainValueRange(
-          sensitivity_packed >> 2,
-          "Velocity sensitivity",
-          0,
-          7);
-
-      final int amp_mod_sensitivity =
-        this.checkConstrainValueRange(
-          sensitivity_packed & 0b11,
-          "Amplitude mod sensitivity",
-          0,
-          3);
-
-      Preconditions.checkPreconditionL(
-        this.stream.getByteCount(),
-        this.stream.getByteCount() - this.offset_start == 14L,
-        n -> "Must have consumed 14 octets");
-
-      final int output_level =
-        this.checkConstrainValueRange(
-          this.stream.readByte(),
-          "Output Level",
-          0,
-          99);
-
-      final int osc_pack =
-        this.stream.readByte();
-
-      final int freq_coarse =
-        this.checkConstrainValueRange(
-          osc_pack >> 1,
-          "Oscillator frequency coarse",
-          0,
-          31);
-
-      final int osc_mode =
-        this.checkConstrainValueRange(
-          osc_pack & 0x1,
-          "Oscillator mode",
-          0,
-          1);
-
-      final int osc_frequency_fine =
-        this.checkConstrainValueRange(
-          this.stream.readByte(),
-          "Oscillator frequency fine",
-          0,
-          99);
-
       op_b.setEnvelopeR1Rate(env_r1_rate);
       op_b.setEnvelopeR2Rate(env_r2_rate);
       op_b.setEnvelopeR3Rate(env_r3_rate);
@@ -447,26 +475,18 @@ final class Dx7Reader implements Dx7SysExReaderType
       op_b.setEnvelopeR2Level(env_r2_level);
       op_b.setEnvelopeR3Level(env_r3_level);
       op_b.setEnvelopeR4Level(env_r4_level);
-      op_b.setLevelScalingBreakpoint(level_scaling_breakpoint);
-      op_b.setLevelScalingLeftDepth(level_scaling_left_depth);
-      op_b.setLevelScalingRightDepth(level_scaling_right_depth);
-      op_b.setLevelScalingLeftCurve(left_curve);
-      op_b.setLevelScalingRightCurve(right_curve);
-      op_b.setRateScaling(rate_scaling);
-      op_b.setOscillatorFrequencyDetune(detune);
-      op_b.setVelocitySensitivity(vel_sensitivity);
-      op_b.setLfoAmplitudeModulationSensitivity(amp_mod_sensitivity);
-      op_b.setOutputLevel(output_level);
-      op_b.setOscillatorFrequencyCoarse(freq_coarse);
-      op_b.setOscillatorMode(Dx7OperatorType.OscillatorMode.ofInteger(osc_mode));
-      op_b.setOscillatorFrequencyFine(osc_frequency_fine);
+    }
 
+    private static void checkStreamPosition(
+      final Dx7InputStream stream,
+      final long offset_start,
+      final long octet_count)
+    {
+      final long count = stream.getByteCount();
       Preconditions.checkPreconditionL(
-        this.stream.getByteCount() - this.offset_start,
-        this.stream.getByteCount() - this.offset_start == 17L,
-        n -> "Must have consumed 17 octets");
-
-      return Optional.of(op_b.build());
+        count,
+        count - offset_start == octet_count,
+        n -> "Must have consumed " + octet_count + " octets");
     }
   }
 
@@ -592,11 +612,136 @@ final class Dx7Reader implements Dx7SysExReaderType
         }
       }
 
-      Invariants.checkInvariantL(
-        this.stream.getByteCount(),
-        this.stream.getByteCount() - this.offset_start == 102L,
-        x -> "Must have consumed 102 octets");
+      checkStreamPosition(this.stream, this.offset_start, 102L);
 
+      this.parsePitchEnvelope(vb);
+
+      checkStreamPosition(this.stream, this.offset_start, 110L);
+
+      this.parseAlgorithmFeedback(vb);
+      this.parseLFO(vb);
+      this.parseTranspose(vb);
+      final String voice_name = this.parseName();
+
+      checkStreamPosition(this.stream, this.offset_start, 128L);
+
+      if (this.errors.errorsEncountered() || valid_ops_processed != 6) {
+        return Optional.empty();
+      }
+
+      return Optional.of(Dx7VoiceNamed.of(
+        voice_name,
+        vb.build(),
+        Optional.empty()));
+    }
+
+    private void parseAlgorithmFeedback(
+      final Dx7Voice.Builder vb)
+      throws IOException
+    {
+      final int algo_raw =
+        this.checkConstrainValueRange(
+          this.stream.readByte() & 0b11111,
+          "Algorithm",
+          0,
+          31);
+
+      vb.setAlgorithm(Dx7AlgorithmID.of(algo_raw + 1));
+
+      {
+        final int pack = this.stream.readByte();
+        final int feed = (pack & 0b0000_0111);
+        final int sync = (pack & 0b0000_1000) >>> 3;
+
+        vb.setFeedback(
+          this.checkConstrainValueRange(
+            feed,
+            "Feedback",
+            0,
+            31));
+
+        vb.setOscillatorKeySync(sync == 1);
+      }
+    }
+
+    private String parseName()
+      throws IOException
+    {
+      final byte[] name = new byte[10];
+      for (int index = 0; index < 10; ++index) {
+        name[index] = (byte) this.stream.readByte();
+      }
+      // False positive: Instantiating a string from a byte array is fine
+      // CHECKSTYLE:OFF
+      return new String(name, StandardCharsets.US_ASCII);
+      // CHECKSTYLE:ON
+    }
+
+    private void parseTranspose(
+      final Dx7Voice.Builder vb)
+      throws IOException
+    {
+      final int transpose_raw = this.stream.readByte();
+      this.checkConstrainValueRange(
+        transpose_raw,
+        "Transpose value",
+        0,
+        48);
+
+      final int transpose = transpose_raw - 24;
+      vb.setTranspose(transpose);
+    }
+
+    private void parseLFO(
+      final Dx7Voice.Builder vb)
+      throws IOException
+    {
+      vb.setLfoSpeed(
+        this.checkConstrainValueRange(
+          this.stream.readByte(),
+          "LFO Rate",
+          0,
+          99));
+
+      vb.setLfoDelay(
+        this.checkConstrainValueRange(
+          this.stream.readByte(),
+          "LFO Delay",
+          0,
+          99));
+
+      vb.setLfoPitchModulationDepth(
+        this.checkConstrainValueRange(
+          this.stream.readByte(),
+          "LFO Pitch Modulation Depth",
+          0,
+          99));
+
+      vb.setLfoAmplitudeModulationDepth(
+        this.checkConstrainValueRange(
+          this.stream.readByte(),
+          "LFO Amplitude Modulation Depth",
+          0,
+          99));
+
+      checkStreamPosition(this.stream, this.offset_start, 116L);
+
+      {
+        final int lfo_pack = this.stream.readByte();
+        final int lfpms = (lfo_pack & 0b0111_0000) >>> 4;
+        final int lwave = (lfo_pack & 0b0000_1110) >>> 1;
+        final int lsync = (lfo_pack & 0b0000_0001);
+
+        vb.setLfoPitchModulationSensitivity(lfpms);
+        vb.setLfoWave(LFOWave.ofInteger(lwave));
+        vb.setLfoKeySync(lsync == 1);
+      }
+    }
+
+    private void parsePitchEnvelope(
+      final Dx7Voice.Builder vb)
+      throws IOException
+    {
       vb.setPitchEnvelopeR1Rate(
         this.checkConstrainValueRange(
           this.stream.readByte(),
@@ -652,111 +797,22 @@ final class Dx7Reader implements Dx7SysExReaderType
           "Pitch Envelope R4 Level",
           0,
           99));
+    }
 
+    private static void checkStreamPosition(
+      final Dx7InputStream stream,
+      final long offset_start,
+      final long octets)
+    {
+      final long count = stream.getByteCount();
       Invariants.checkInvariantL(
-        this.stream.getByteCount(),
-        this.stream.getByteCount() - this.offset_start == 110L,
-        x -> "Must have consumed 110 octets");
-
-      final int algo_raw =
-        this.checkConstrainValueRange(
-          this.stream.readByte() & 0b11111,
-          "Algorithm",
-          0,
-          31);
-
-      vb.setAlgorithm(Dx7AlgorithmID.of(algo_raw + 1));
-
-      {
-        final int pack = this.stream.readByte();
-        final int feed = (pack & 0b0000_0111);
-        final int sync = (pack & 0b0000_1000) >>> 3;
-
-        vb.setFeedback(
-          this.checkConstrainValueRange(
-            feed,
-            "Feedback",
-            0,
-            31));
-
-        vb.setOscillatorKeySync(sync == 1);
-      }
-
-      vb.setLfoSpeed(
-        this.checkConstrainValueRange(
-          this.stream.readByte(),
-          "LFO Rate",
-          0,
-          99));
-
-      vb.setLfoDelay(
-        this.checkConstrainValueRange(
-          this.stream.readByte(),
-          "LFO Delay",
-          0,
-          99));
-
-      vb.setLfoPitchModulationDepth(
-        this.checkConstrainValueRange(
-          this.stream.readByte(),
-          "LFO Pitch Modulation Depth",
-          0,
-          99));
-
-      vb.setLfoAmplitudeModulationDepth(
-        this.checkConstrainValueRange(
-          this.stream.readByte(),
-          "LFO Amplitude Modulation Depth",
-          0,
-          99));
-
-      Invariants.checkInvariantL(
-        this.stream.getByteCount(),
-        this.stream.getByteCount() - this.offset_start == 116L,
-        x -> "Must have consumed 116 octets");
-
-      {
-        final int lfo_pack = this.stream.readByte();
-        final int lfpms = (lfo_pack & 0b0111_0000) >>> 4;
-        final int lwave = (lfo_pack & 0b0000_1110) >>> 1;
-        final int lsync = (lfo_pack & 0b0000_0001);
-
-        vb.setLfoPitchModulationSensitivity(lfpms);
-        vb.setLfoWave(LFOWave.ofInteger(lwave));
-        vb.setLfoKeySync(lsync == 1);
-      }
-
-      {
-        final int transpose_raw = this.stream.readByte();
-        this.checkConstrainValueRange(
-          transpose_raw,
-          "Transpose value",
-          0,
-          48);
-
-        final int transpose = transpose_raw - 24;
-        vb.setTranspose(transpose);
-      }
-
-      final byte[] name = new byte[10];
-      for (int index = 0; index < 10; ++index) {
-        name[index] = (byte) this.stream.readByte();
-      }
-      final String voice_name = new String(name, StandardCharsets.US_ASCII);
-
-      Invariants.checkInvariantL(
-        this.stream.getByteCount() - this.offset_start,
-        this.stream.getByteCount() - this.offset_start == 128L,
-        x -> "Must have consumed 128 octets");
-
-      if (this.errors.errorsEncountered() || valid_ops_processed != 6) {
-        return Optional.empty();
-      }
-
-      return Optional.of(Dx7VoiceNamed.of(
-        voice_name,
-        vb.build(),
-        Optional.empty()));
+        count,
+        count - offset_start == octets,
+        x -> new StringBuilder(32)
+          .append("Must have consumed ")
+          .append(octets)
+          .append(" octets")
+          .toString());
     }
   }
 

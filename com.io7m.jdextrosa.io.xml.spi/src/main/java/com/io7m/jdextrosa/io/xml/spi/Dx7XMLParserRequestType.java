@@ -22,6 +22,7 @@ import org.immutables.value.Value;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Path;
+import java.util.Optional;
 
 /**
  * A request to parse a file.
@@ -40,7 +41,7 @@ public interface Dx7XMLParserRequestType
    */
 
   @Value.Parameter
-  Path baseDirectory();
+  Optional<Path> baseDirectory();
 
   /**
    * @return The URI of the file, for diagnostic purposes

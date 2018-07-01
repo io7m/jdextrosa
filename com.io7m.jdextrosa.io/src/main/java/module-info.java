@@ -25,7 +25,6 @@ module com.io7m.jdextrosa.io
 
   requires com.io7m.jaffirm.core;
   requires com.io7m.jdextrosa.core;
-  requires com.io7m.jlexing.core;
   requires com.io7m.jranges.core;
   requires com.io7m.junreachable.core;
   requires io.vavr;

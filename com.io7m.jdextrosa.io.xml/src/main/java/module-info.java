@@ -20,20 +20,18 @@
 
 module com.io7m.jdextrosa.io.xml
 {
-  requires static org.immutables.value;
-  requires static com.io7m.immutables.style;
-
   requires java.xml;
 
-  requires com.io7m.jaffirm.core;
-  requires com.io7m.jdextrosa.core;
   requires com.io7m.jdextrosa.io.xml.spi;
-  requires com.io7m.jlexing.core;
   requires com.io7m.jranges.core;
   requires com.io7m.junreachable.core;
+  requires com.io7m.jxe.core;
   requires io.vavr;
   requires org.slf4j;
   requires Saxon.HE;
+
+  requires transitive com.io7m.jdextrosa.core;
+  requires transitive com.io7m.jlexing.core;
 
   exports com.io7m.jdextrosa.io.xml;
   exports com.io7m.jdextrosa.io.xml.v1;

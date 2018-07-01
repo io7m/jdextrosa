@@ -25,13 +25,13 @@ module com.io7m.jdextrosa.io.xml.spi
 
   requires java.xml;
 
-  requires com.io7m.jaffirm.core;
-  requires com.io7m.jdextrosa.core;
-  requires com.io7m.jlexing.core;
   requires com.io7m.jranges.core;
   requires com.io7m.junreachable.core;
   requires io.vavr;
-  requires org.slf4j;
+
+  requires transitive com.io7m.jxe.core;
+  requires transitive com.io7m.jdextrosa.core;
+  requires transitive com.io7m.jlexing.core;
 
   exports com.io7m.jdextrosa.io.xml.spi;
 }

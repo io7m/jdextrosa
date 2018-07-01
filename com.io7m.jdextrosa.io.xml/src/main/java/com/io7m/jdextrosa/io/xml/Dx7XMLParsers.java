@@ -22,7 +22,9 @@ import com.io7m.jdextrosa.io.xml.spi.Dx7XMLErrorLog;
 import com.io7m.jdextrosa.io.xml.spi.Dx7XMLFormatProviderType;
 import com.io7m.jdextrosa.io.xml.spi.Dx7XMLParseError;
 import com.io7m.jdextrosa.io.xml.spi.Dx7XMLParserRequest;
-import com.io7m.jdextrosa.io.xml.spi.Dx7XMLSchemaDefinition;
+import com.io7m.jxe.core.JXEHardenedSAXParsers;
+import com.io7m.jxe.core.JXESchemaDefinition;
+import com.io7m.jxe.core.JXESchemaResolutionMappings;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Stream;
 import io.vavr.collection.Vector;
@@ -44,6 +46,8 @@ import java.net.URI;
 import java.util.Objects;
 import java.util.ServiceLoader;
 
+import static com.io7m.jxe.core.JXEXInclude.XINCLUDE_ENABLED;
+
 /**
  * The main XML parser provider.
  */
@@ -56,16 +60,17 @@ public final class Dx7XMLParsers
   private static final URI XML_NAMESPACE =
     URI.create("http://www.w3.org/XML/1998/namespace");
 
-  private static final Dx7XMLSchemaDefinition XML_SCHEMA =
-    Dx7XMLSchemaDefinition.builder()
+  private static final JXESchemaDefinition XML_SCHEMA =
+    JXESchemaDefinition.builder()
       .setNamespace(XML_NAMESPACE)
       .setFileIdentifier("file::xml.xsd")
       .setLocation(Dx7XMLParsers.class.getResource(
         "/com/io7m/jdextrosa/io/xml/xml.xsd"))
       .build();
 
-  private final Dx7XMLHardenedSAXParsers parsers;
-  private final Vector<Dx7XMLFormatProviderType> formats;
+  private final JXEHardenedSAXParsers parsers;
+  private final Vector<Dx7XMLFormatProviderType> providers;
+  private final JXESchemaResolutionMappings schemas;
 
   /**
    * Instantiate a parser provider.
@@ -73,11 +78,19 @@ public final class Dx7XMLParsers
 
   public Dx7XMLParsers()
   {
-    this.parsers = new Dx7XMLHardenedSAXParsers();
-    this.formats =
+    this.parsers = new JXEHardenedSAXParsers();
+    this.providers =
       Stream.ofAll(ServiceLoader.load(Dx7XMLFormatProviderType.class).stream())
         .map(ServiceLoader.Provider::get)
         .toVector();
+
+    final JXESchemaResolutionMappings.Builder schemas_builder =
+      JXESchemaResolutionMappings.builder();
+
+    this.providers.forEach(
+      format -> schemas_builder.putMappings(format.schema().namespace(), format.schema()));
+
+    this.schemas = schemas_builder.build();
   }
 
   /**
@@ -87,21 +100,21 @@ public final class Dx7XMLParsers
    *
    * @return A parser
    *
-   * @throws IOException                     On I/O errors
    * @throws Dx7ParserConfigurationException On parser configuration errors
    */
 
   public Dx7XMLParserType create(
     final Dx7XMLParserRequest r)
-    throws IOException, Dx7ParserConfigurationException
+    throws Dx7ParserConfigurationException
   {
     Objects.requireNonNull(r, "Request");
 
     try {
       final XMLReader reader =
-        this.parsers.createXMLReader(r.baseDirectory(), true, this.formats);
+        this.parsers.createXMLReader(r.baseDirectory(), XINCLUDE_ENABLED, this.schemas);
+
       final HandlerInitial handler =
-        new HandlerInitial(r, this.formats, reader);
+        new HandlerInitial(r, this.providers, reader);
       reader.setContentHandler(handler);
       return new Parser(r, reader, handler);
     } catch (final ParserConfigurationException | SAXException e) {
@@ -200,7 +213,6 @@ public final class Dx7XMLParsers
     @Override
     public void warning(
       final SAXParseException e)
-      throws SAXException
     {
       this.errors.warning(e);
     }
@@ -208,7 +220,6 @@ public final class Dx7XMLParsers
     @Override
     public void error(
       final SAXParseException e)
-      throws SAXException
     {
       this.errors.error(e);
     }
@@ -224,14 +235,12 @@ public final class Dx7XMLParsers
 
     @Override
     public void startDocument()
-      throws SAXException
     {
       LOG.debug("startDocument");
     }
 
     @Override
     public void endDocument()
-      throws SAXException
     {
       LOG.debug("endDocument");
     }

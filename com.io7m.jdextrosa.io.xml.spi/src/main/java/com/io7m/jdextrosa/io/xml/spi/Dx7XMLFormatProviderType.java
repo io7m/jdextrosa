@@ -16,6 +16,7 @@
 
 package com.io7m.jdextrosa.io.xml.spi;
 
+import com.io7m.jxe.core.JXESchemaDefinition;
 import org.xml.sax.ext.Locator2;
 
 import java.io.OutputStream;
@@ -31,7 +32,7 @@ public interface Dx7XMLFormatProviderType
    * @return The XML schema supported by this format provider
    */
 
-  Dx7XMLSchemaDefinition schema();
+  JXESchemaDefinition schema();
 
   /**
    * @param in_errors  The error log

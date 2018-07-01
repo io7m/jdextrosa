@@ -142,7 +142,7 @@ public final class Dx7XMLProviderRoundTripTest
     final Vector<Dx7VoiceNamed> result0;
     try (InputStream stream = Files.newInputStream(path0)) {
       final Dx7XMLParserType p = parsers.create(
-        Dx7XMLParserRequest.of(root, path0.toUri(), stream));
+        Dx7XMLParserRequest.of(Optional.of(root), path0.toUri(), stream));
       final Validation<Seq<Dx7XMLParseError>, Vector<Dx7VoiceNamed>> r = p.parse();
 
       this.dump(r);
