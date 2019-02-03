@@ -26,8 +26,7 @@ import io.vavr.collection.SortedSet;
 import java.util.Objects;
 
 /**
- * Attempt to make a voice staccato by increasing the attack and release rates
- * of the carriers.
+ * Attempt to make a voice staccato by increasing the attack and release rates of the carriers.
  */
 
 public final class Dx7Staccato
@@ -49,6 +48,22 @@ public final class Dx7Staccato
       Dx7AlgorithmOperators.carriers(in_voice.algorithm());
     this.modulators =
       Dx7AlgorithmOperators.modulators(in_voice.algorithm());
+  }
+
+  /**
+   * Create a new transform.
+   *
+   * @param voice      The input voice
+   * @param parameters The transform parameters
+   *
+   * @return A transform
+   */
+
+  public static Dx7Staccato create(
+    final Dx7Voice voice,
+    final Dx7StaccatoParameters parameters)
+  {
+    return new Dx7Staccato(voice, parameters);
   }
 
   /**
